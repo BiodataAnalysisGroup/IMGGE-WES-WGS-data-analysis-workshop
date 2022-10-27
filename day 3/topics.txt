@@ -1,4 +1,6 @@
 Optional
-1. (OR) Formalizing workflows – Common Workflow Language and Docker
-2. (OR) Bring-your-own-data
-	1. Discuss data analysis approaches per project
+1. Formalizing workflows – Common Workflow Language and Docker
+	1. Introduction to Docker
+	2. Building a container
+	3. Basic definitions of CWL
+	4. Running a simple workflow
