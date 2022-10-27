@@ -1,0 +1,4 @@
+Optional
+1. (OR) Formalizing workflows – Common Workflow Language and Docker
+2. (OR) Bring-your-own-data
+	1. Discuss data analysis approaches per project

@@ -1,0 +1,7 @@
+1. Quick overview of basic Unix commands (Navigating Files and Directories, Working With Files and Directories, Pipes and Filters, Loops, Finding Things)  
+2. Structure of germline small variant calling
+	1. Background and Metadata (discussing the dataset to be used)
+	2. Assessing Read Quality (discuss FASTQ format)
+	3. Trimming and Filtering (discuss quality parameters and how to assess them)
+	4. Mapping and post-processing (discuss BAM/SAM format, mapping statistics and visualization of mapped reads)
+	5. Variant calling (discuss VCF file format and annotation, Filtering / extraction of variants from defined genomic regions, impact of QC of the raw and mapped reads to the variant calling QC)
