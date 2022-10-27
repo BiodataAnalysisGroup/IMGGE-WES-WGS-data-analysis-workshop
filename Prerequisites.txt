@@ -1,0 +1,2 @@
+1. Knowledge of UNIX shell/bash (navigating, making, moving, removing files and directories; basic skills of installing programs; calling scripts; basic functions, such as ls, head, tail, pipe, grep; nano)
+2. Knowledge of R (basic knowledge, including importing datasets, structure and basic statistics of the variables, basic knowledge of visualization including the ggplot2 package)
