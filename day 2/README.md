@@ -1,2 +1,7 @@
-# Serbia-WES-WGS-data-analysis
-Training material for WES/WGS data analysis course
+# Copy Number Variations
+
+-Theory
+
+-CNVkit installation
+
+-Calling pipeline
