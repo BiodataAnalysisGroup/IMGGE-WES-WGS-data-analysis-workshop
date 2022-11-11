@@ -47,6 +47,9 @@ do
     cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o gene_scatter_plots/Tumor-$gene-scatter.pdf
 done
 
+# Draw copy number on chromosomes as an ideogram 
+cnvkit.py diagram -s Tumor.cns Tumor.cnr
+
 ##################################
 #      Automated pipeline        #
 ################################## 
@@ -69,3 +72,6 @@ for gene in `cat trusted-genes.txt`
 do
     cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o gene_scatter_plots/Tumor-$gene-scatter.pdf
 done
+
+# Draw copy number on chromosomes as an ideogram 
+cnvkit.py diagram -s Tumor.cns Tumor.cnr
