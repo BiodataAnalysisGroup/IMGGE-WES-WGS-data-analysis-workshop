@@ -84,6 +84,39 @@ samtools sort --threads 16 -o father_sorted.bam father.bam
 samtools sort --threads 16 -o mother_sorted.bam mother.bam
 samtools sort --threads 16 -o proband_sorted.bam proband.bam
 
+# Generate mapping statistics on BAM files
+# 1. FASTQC on sorted BAM files
+fastqc *_sorted.bam
+
+# 2. samtools flagstat
+samtools flagstat father_sorted.bam > father_sorted.flagstat
+samtools flagstat mother_sorted.bam > mother_sorted.flagstat
+samtools flagstat proband_sorted.bam > proband_sorted.flagstat
+# OR (in case of large number of samples, use loops)
+for i in $(ls *_sorted.bam)
+do
+    # extract sample name (remove suffix)
+    sample=${i%_sorted*}
+    # run command
+    samtools flagstat $i > ${sample}.flagstat
+done
+
+# 3. samtools stats & plot-bamstat
+for i in $(ls *_sorted.bam)
+do
+    # extract sample name (remove suffix)
+    sample=${i%_sorted*} # keep the *_sorted* part of the filename
+    # run samtools stat
+    samtools stats $i > ${sample}.bc
+    # extract summary statistics
+    cat ${sample}.bc | grep ^SN | cut -f 2- > ${sample}.bc.summary
+    # produce plot-bamstat plot
+    plot-bamstats -p ./bamstat_plots/${sample} ${sample}.bc
+done
+
+# 4. custom script (e.g., in R) OR ready-to-use software solution (e.g., BAMStats (https://bamstats.sourceforge.net/))
+Rscript summary_plot_generation.R
+
 # Filter the paired-end reads of all samples to retain only those read pairs, 
 # for which both the forward and the reverse read have been mapped to the reference successfully
 # https://broadinstitute.github.io/picard/explain-flags.html
@@ -177,14 +210,3 @@ java -jar snpEff/SnpSift.jar Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_no
 
 # GEMINI
 # Run Galaxy Europe tools: GEMINI load and GEMINI inheritance pattern with the tutorial-suggested parameters
-
-# mkdir gemini_dir
-# cp merged_norm_anno.vcf gemini_dir/
-# # call gemini using docker
-# docker run --rm -ti -v /home/kkyritsis/wes_galaxy_tutorial/gemini_dir:/datasets sibswiss/gemini:0.30.2-patched load --help
-# docker run -v /home/kkyritsis/wes_galaxy_tutorial/gemini_dir:/datasets sibswiss/gemini:0.30.2-patched load --cores 16 -v /datasets/merged_norm_anno.vcf --skip-gerp-bp --skip-cadd --skip-gene-tables -t snpEff -p /datasets/Pedigree.txt my.db
-# # create SQL database with gemini load
-# gemini load --cores 16 -v merged_norm_anno.vcf -t snpEff -p recessive.ped my.db
-# # find variants meeting an autosomal recessive model
-# gemini autosomal_recessive --filter "impact_severity != 'LOW'" my.db
-

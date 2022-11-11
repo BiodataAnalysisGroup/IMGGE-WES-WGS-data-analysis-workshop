@@ -16,11 +16,11 @@ Trim Galore or Trimmomatic
 
 ## 4. Mapping and post-processing (discuss BAM/SAM format, mapping statistics and visualization of mapped reads)
 
-BWA-MEM, samtools, Picard tools
+BWA-MEM, samtools, custom R script 
 
 ## 5. Variant calling (discuss VCF file format and annotation, Filtering / extraction of variants from defined genomic regions, impact of QC of the raw and mapped reads to the variant calling QC)
 
-Freebayes, bcftools
+Picard tools, Freebayes, bcftools
 
 ## 6. Variant annotation
 
