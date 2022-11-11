@@ -63,8 +63,9 @@ cnvkit.py batch Tumor.bam --normal Normal.bam  --targets baits.bed --annotate re
 cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns | tail -n+2 | cut -f1 | sort > segment-genes.txt
 cnvkit.py genemetrics -y Tumor.cnr | tail -n+2 | cut -f1 | sort > ratio-genes.txt
 comm -12 ratio-genes.txt segment-genes.txt > trusted-genes.txt
+mkdir gene_scatter_plots
 
 for gene in `cat trusted-genes.txt`
 do
-    cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o Tumor-$gene-scatter.pdf
+    cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o gene_scatter_plots/Tumor-$gene-scatter.pdf
 done
