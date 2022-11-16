@@ -19,6 +19,21 @@
 
 Using the Whole-Genome Sequencing (WGS) data from a family of three (father, mother and child) to run the tutorial on Variant calling workflow [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3243160.svg)](https://doi.org/10.5281/zenodo.3243160). The following tutorial is adjusted from the [Exome sequencing data analysis for diagnosing a genetic disease](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html) tutorial, making use of command-line commands, rather than Galaxy tools with the exception of [Gemini](https://doi.org/10.1371/journal.pcbi.1003153), to perform the analysis.
 
+The files required for this tutorial can be downloaded directly from here:
+
+- father ([R1](https://zenodo.org/record/3243160/files/father_R1.fq.gz?download=1)) ([R2](https://zenodo.org/record/3243160/files/father_R2.fq.gz?download=1))
+- mother ([R1](https://zenodo.org/record/3243160/files/mother_R1.fq.gz?download=1)) ([R2](https://zenodo.org/record/3243160/files/mother_R2.fq.gz?download=1))
+- child (proband) ([R1](https://zenodo.org/record/3243160/files/proband_R1.fq.gz?download=1)) ([R2](https://zenodo.org/record/3243160/files/proband_R2.fq.gz?download=1))
+- [hg19_chr8.fa.gz](https://zenodo.org/record/3243160/files/hg19_chr8.fa.gz?download=1)
+- [dbsnp_138.hg19.chr8.vcf.gz](https://zenodo.org/record/3243160/files/dbsnp_138.hg19.chr8.vcf.gz?download=1)
+- [Pedigree.txt](https://zenodo.org/record/3243160/files/Pedigree.txt?download=1)
+
+Pre-mapped BAM files are also available for all three samples (although mapping will be performed during the tutorial):
+
+- [mapped_reads_father]()
+- [mapped_reads_mother]()
+- [mapped_reads_child]()
+
 ## 3. Assessing Read Quality (discuss FASTQ format)
 
 FastQC tool
