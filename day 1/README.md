@@ -203,19 +203,19 @@ proband_R1.fq.gz proband_R2.fq.gz
 mkdir trimmomatic_data
 # paired-end mode
 #
-java -jar ../Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 -phred33 father_R1.fq.gz father_R2.fq.gz \
+trimmomatic PE -threads 16 -phred33 father_R1.fq.gz father_R2.fq.gz \
 trimmomatic_data/father_R1_paired.fq.gz trimmomatic_data/father_R1_unpaired.fq.gz \
 trimmomatic_data/father_R2_paired.fq.gz trimmomatic_data/father_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
 SLIDINGWINDOW:4:15 LEADING:5 TRAILING:3 MINLEN:36
 #
-java -jar ../Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 -phred33 mother_R1.fq.gz mother_R2.fq.gz \
+trimmomatic PE -threads 16 -phred33 mother_R1.fq.gz mother_R2.fq.gz \
 trimmomatic_data/mother_R1_paired.fq.gz trimmomatic_data/mother_R1_unpaired.fq.gz \
 trimmomatic_data/mother_R2_paired.fq.gz trimmomatic_data/mother_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
 SLIDINGWINDOW:4:15 LEADING:5 TRAILING:3 MINLEN:36
 #
-java -jar ../Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 -phred33 proband_R1.fq.gz proband_R2.fq.gz \
+trimmomatic PE -threads 16 -phred33 proband_R1.fq.gz proband_R2.fq.gz \
 trimmomatic_data/proband_R1_paired.fq.gz trimmomatic_data/proband_R1_unpaired.fq.gz \
 trimmomatic_data/proband_R2_paired.fq.gz trimmomatic_data/proband_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
@@ -306,7 +306,7 @@ samtools view --threads 16 -b -f 2 -o proband_filtered.bam proband_sorted.bam
 
 ```bash
 # Set read groups information (Picard)
-java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
+picard AddOrReplaceReadGroups \
     I=father_filtered.bam \
     O=father_aor.bam \
     RGID=1 \
@@ -315,7 +315,7 @@ java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
     RGPU=unit1 \
     RGSM=father
 #
-java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
+picard AddOrReplaceReadGroups \
     I=mother_filtered.bam \
     O=mother_aor.bam \
     RGID=2 \
@@ -324,7 +324,7 @@ java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
     RGPU=unit1 \
     RGSM=mother
 #
-java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
+picard AddOrReplaceReadGroups \
     I=proband_filtered.bam \
     O=proband_aor.bam \
     RGID=3 \
@@ -334,17 +334,17 @@ java -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups \
     RGSM=proband
 
 # MarkDuplicates (Picard)
-java -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates \
+picard MarkDuplicates \
       I=father_aor.bam \
       O=father_md.bam \
       M=father_md_metrics.txt
 #
-java -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates \
+picard MarkDuplicates \
       I=mother_aor.bam \
       O=mother_md.bam \
       M=mother_md_metrics.txt
 #
-java -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates \
+picard MarkDuplicates \
       I=proband_aor.bam \
       O=proband_md.bam \
       M=proband_md_metrics.txt
@@ -383,12 +383,12 @@ bcftools norm --threads 16 -f hg19_chr8.fa --multiallelics -both -Ov -o merged_n
 ```bash
 # Variant annotation - SnpEff & SnpSift
 # check available databases for Homo sapiens
-java -jar snpEff/snpEff.jar databases | grep -i "Homo_sapiens"
+snpEff databases | grep -i "Homo_sapiens"
 # Build UCSC hg19 database
-java -jar snpEff/snpEff.jar download -v hg19
+snpEff download -v hg19
 # Annotate with snpEff hg19 genome and dbSNP138 - hg19 - chr8
-java -jar snpEff/snpEff.jar ann -v -c snpEff/snpEff.config -noStats hg19 merged_norm.vcf | \
-java -jar snpEff/SnpSift.jar Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
+snpEff ann -v -c snpEff/snpEff.config -noStats hg19 merged_norm.vcf | \
+SnpSift Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
 # Analysis of annotated variants with the 'Autosomal recessive' model of Gemini software
 ```
 Run [Galaxy Europe tools](https://usegalaxy.eu/) `GEMINI load` and `GEMINI inheritance pattern` with the [tutorial-suggested parameters](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html#generating-a-gemini-database-of-variants-for-further-annotation-and-efficient-variant-queries)
