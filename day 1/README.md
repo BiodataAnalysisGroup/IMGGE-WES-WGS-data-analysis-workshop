@@ -2,12 +2,12 @@
 
 ## Introduction
 
-There are many different command-line interfaces. In this tutorial we work with Bash ("Bourne again shell"). Some of the many things one can do utilizing command-line are:
+There are many different command-line interfaces. In this tutorial we work with WSL2 and Bash ("Bourne again shell"). Some of the many things one can do utilizing the command-line are:
 
-- Navigate computer
+- Navigate the computational environment
 - View content
-- Start and control the running of programs
-- Process files
+- Start and control the execution of programs
+- Process files and folders
 - Write and run code
 
 ## Navigating Files and Directories
@@ -120,7 +120,7 @@ done
 
 # B. Structure of germline small variant calling
 
-## 1. List of software tools for installation
+## 1. List of software tools for installation (done automatically with conda and day1.yml)
 
 - [FASTQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [Trim galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
@@ -151,6 +151,8 @@ Pre-mapped BAM files are also available for all three samples (although mapping 
 - [mapped_reads_father](https://zenodo.org/record/3243160/files/mapped_reads_father.bam?download=1)
 - [mapped_reads_mother](https://zenodo.org/record/3243160/files/mapped_reads_mother.bam?download=1)
 - [mapped_reads_child](https://zenodo.org/record/3243160/files/mapped_reads_proband.bam?download=1)
+
+Download all files in the same folder, where the tutorial will take place.
 
 ## 3. Assessing Read Quality (discuss FASTQ format)
 
@@ -387,7 +389,6 @@ java -jar snpEff/snpEff.jar download -v hg19
 # Annotate with snpEff hg19 genome and dbSNP138 - hg19 - chr8
 java -jar snpEff/snpEff.jar ann -v -c snpEff/snpEff.config -noStats hg19 merged_norm.vcf | \
 java -jar snpEff/SnpSift.jar Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
-
-# GEMINI
-# Run Galaxy Europe tools: GEMINI load and GEMINI inheritance pattern with the tutorial-suggested parameters
+# Analysis of annotated variants with the 'Autosomal recessive' model of Gemini software
 ```
+Run [Galaxy Europe tools](https://usegalaxy.eu/) `GEMINI load` and `GEMINI inheritance pattern` with the [tutorial-suggested parameters](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html#generating-a-gemini-database-of-variants-for-further-annotation-and-efficient-variant-queries)
