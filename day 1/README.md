@@ -118,7 +118,7 @@ do
 done
 ```
 
-# B. Structure of germline small variant calling
+# B. Structure of germline small variant calling workflow
 
 ## 1. List of software tools for installation (done automatically with conda and day1.yml)
 
@@ -130,7 +130,7 @@ done
 - [Picard tools](https://anaconda.org/bioconda/picard)
 - [Freebayes](https://anaconda.org/bioconda/freebayes) ([manual](https://github.com/freebayes/freebayes))
 - [bcftools](https://anaconda.org/bioconda/bcftools) ([manual](https://samtools.github.io/bcftools/bcftools.html))
-- [SnpEff & SnpSift](http://pcingola.github.io/SnpEff/) ([manual]())
+- [SnpEff & SnpSift](http://pcingola.github.io/SnpEff/)
 - GEMINI (load & inheritance pattern) through [Galaxy Europe](https://usegalaxy.eu/)
 
 ## 2. Background and Metadata (discussing the dataset to be used)
@@ -152,7 +152,7 @@ Pre-mapped BAM files are also available for all three samples (although mapping 
 - [mapped_reads_mother](https://zenodo.org/record/3243160/files/mapped_reads_mother.bam?download=1)
 - [mapped_reads_child](https://zenodo.org/record/3243160/files/mapped_reads_proband.bam?download=1)
 
-Download all files in the same folder, where the tutorial will take place. Decompress (*.gz) all files (e.g., using `gunzip`) beforehand (as it can be time-consuming) to be ready for the tutorial.
+Download all files in the same folder, where the tutorial will take place. Decompress the files for reference genome (hg19_chr8.fa.gz) and dbSNP 138 (dbsnp_138.hg19.chr8.vcf.gz) using any appropriate tool (e.g., `gunzip`) beforehand to be ready for the tutorial (as it can be time-consuming).
 
 ## 3. Assessing Read Quality (discuss FASTQ format)
 

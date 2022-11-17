@@ -27,16 +27,35 @@ In this part of the tutorial we discuss and provide practical examples on how to
 
 The GWAS analysis here is performed using [PLINK 1.9](https://www.cog-genomics.org/plink/) (DOI:[10.1186/s13742-015-0047-8](https://doi.org/10.1186/s13742-015-0047-8)) and follows the published tutorial of **Marees et al. 2018** (https://github.com/MareesAT/GWA_tutorial/) (DOI:[10.1002/mpr.1608](https://doi.org/10.1002/mpr.1608)) with minor changes.
 
+PLINK accepts two types of format for input files:
+
+1. Binary files ()
+2. Text files ()
+
+
+
 ## B.1. Quality Control before GWAS analysis
 
-### Step B.1.1
+Overview of seven QC steps that should be conducted prior to genetic association analysis (adopted from [Marees et al. 2018](https://doi.org/10.1002/mpr.1608)):
+
+| Step | Command | Function | Thresholds and explanation |
+| --- | --- | --- | --- |
+| Missingness of SNPs and individuals | --geno\n--mind | - | - | 
+| - | - | - | - |
+| - | - | - | - |
+| - | - | - | - |
+| - | - | - | - |
+| - | - | - | - |
+| - | - | - | - |
+
+### Step B.1.1 - Missingness of SNPs and individuals
 
 ```bash
 # Change directory to a folder on your UNIX device containing all files from 1_QC_GWAS.zip:
 # cd <path-to-downloaded-material>/1_QC_GWAS
 
 # Investigate missingness per individual and per SNP and make histograms.
-plink --bfile HapMap_3_r3_1 --missing    
+plink --bfile HapMap_3_r3_1 --missing
 # output: plink.imiss and plink.lmiss, these files show respectively the proportion of missing SNPs per individual and the proportion of missing individuals per SNP.
 
 # Generate plots to visualize the missingness results.
@@ -58,7 +77,7 @@ plink --bfile HapMap_3_r3_4 --mind 0.02 --make-bed --out HapMap_3_r3_5
 
 ###################################################################
 ```
-### Step B.1.2
+### Step B.1.2 - Sex discrepancy
 
 ```bash
 ### Step2 ####

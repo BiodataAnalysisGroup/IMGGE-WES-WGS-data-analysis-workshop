@@ -37,7 +37,7 @@ Pre-mapped BAM files are also available for all three samples (although mapping 
 - [mapped_reads_mother](https://zenodo.org/record/3243160/files/mapped_reads_mother.bam?download=1)
 - [mapped_reads_child](https://zenodo.org/record/3243160/files/mapped_reads_proband.bam?download=1)
 
-Download all files in the same folder, where the tutorial will take place. Decompress (*.gz) all files (e.g., using `gunzip`) beforehand (as it can be time-consuming) to be ready for the tutorial.
+Download all files in the same folder, where the tutorial will take place. Decompress the files for reference genome (hg19_chr8.fa.gz) and dbSNP 138 (dbsnp_138.hg19.chr8.vcf.gz) using any appropriate tool (e.g., `gunzip`) beforehand to be ready for the tutorial (as it can be time-consuming).
 
 ## Day 2
 
