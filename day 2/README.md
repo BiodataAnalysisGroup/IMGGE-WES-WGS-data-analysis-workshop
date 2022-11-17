@@ -29,8 +29,8 @@ The GWAS analysis here is performed using [PLINK 1.9](https://www.cog-genomics.o
 
 PLINK accepts two types of input data:
 
-1. Binary PLINK data, that consist of three files, a binary file that contains individual identifiers (IDs) and genotypes (\*.bed), and two text files that contain information on the individuals (\*.fam) and on the genetic markers (\*.bim).
-2. Text PLINK data consist of two files: one contains information on the individuals and their genotypes (\*.ped); the other contain information on the genetic markers (\*.map).
+1. Text PLINK data that consist of two files: one contains information on the individuals and their genotypes (\*.ped); the other contains information on the genetic markers (\*.map).
+2. Binary PLINK data that consist of three files: a binary file that contains individual identifiers (IDs) and genotypes (\*.bed), and two text files that contain information on the individuals (\*.fam) and on the genetic markers (\*.bim).
 
 ## B.1 - Quality Control before GWAS analysis
 
