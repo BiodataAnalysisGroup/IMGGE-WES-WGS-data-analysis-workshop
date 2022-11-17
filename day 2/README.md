@@ -32,21 +32,7 @@ PLINK accepts two types of format for input files:
 1. Binary files ()
 2. Text files ()
 
-
-
 ## B.1. Quality Control before GWAS analysis
-
-Overview of seven QC steps that should be conducted prior to genetic association analysis (adopted from [Marees et al. 2018](https://doi.org/10.1002/mpr.1608)):
-
-| Step | Command | Function | Thresholds and explanation |
-| --- | --- | --- | --- |
-| Missingness of SNPs and individuals | --geno\n--mind | - | - | 
-| - | - | - | - |
-| - | - | - | - |
-| - | - | - | - |
-| - | - | - | - |
-| - | - | - | - |
-| - | - | - | - |
 
 ### Step B.1.1 - Missingness of SNPs and individuals
 
