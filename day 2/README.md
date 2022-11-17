@@ -27,12 +27,12 @@ In this part of the tutorial we discuss and provide practical examples on how to
 
 The GWAS analysis here is performed using [PLINK 1.9](https://www.cog-genomics.org/plink/) (DOI:[10.1186/s13742-015-0047-8](https://doi.org/10.1186/s13742-015-0047-8)) and follows the published tutorial of **Marees et al. 2018** (https://github.com/MareesAT/GWA_tutorial/) (DOI:[10.1002/mpr.1608](https://doi.org/10.1002/mpr.1608)) with minor changes.
 
-PLINK accepts two types of format for input files:
+PLINK accepts two types of input data:
 
-1. Binary files ()
-2. Text files ()
+1. Binary PLINK data, that consist of three files, a binary file that contains individual identifiers (IDs) and genotypes (\*.bed), and two text files that contain information on the individuals (\*.fam) and on the genetic markers (\*.bim).
+2. Text PLINK data consist of two files: one contains information on the individuals and their genotypes (\*.ped); the other contain information on the genetic markers (\*.map).
 
-## B.1. Quality Control before GWAS analysis
+## B.1 - Quality Control before GWAS analysis
 
 ### Step B.1.1 - Missingness of SNPs and individuals
 
@@ -71,7 +71,6 @@ plink --bfile HapMap_3_r3_4 --mind 0.02 --make-bed --out HapMap_3_r3_5
 # Check for sex discrepancy.
 # Subjects who were a priori determined as females must have a F value of <0.2, and subjects who were a priori determined as males must have a F value >0.8. This F value is based on the X chromosome inbreeding (homozygosity) estimate.
 # Subjects who do not fulfil these requirements are flagged "PROBLEM" by PLINK.
-
 plink --bfile HapMap_3_r3_5 --check-sex 
 
 # Generate plots to visualize the sex-check results.
@@ -93,7 +92,7 @@ plink --bfile HapMap_3_r3_5 --remove sex_discrepancy.txt --make-bed --out HapMap
 
 ###################################################
 ```
-### Step B.1.3
+### Step B.1.3 - Minor allele frequency (MAF)
 
 ```bash
 ### Step 3 ### 
@@ -115,7 +114,7 @@ plink --bfile HapMap_3_r3_7 --maf 0.05 --make-bed --out HapMap_3_r3_8
 
 ####################################################
 ```
-### Step B.1.4
+### Step B.1.4 - Hardy-Weinberg equilibrium (HWE)
 
 ```bash
 # Delete SNPs which are not in Hardy-Weinberg equilibrium (HWE).
@@ -138,7 +137,7 @@ plink --bfile HapMap_hwe_filter_step1 --hwe 1e-10 --hwe-all --make-bed --out Hap
 
 ############################################################
 ```
-### Step B.1.5
+### Step B.1.5 - Heterozygosity
 
 ```bash
 # Generate a plot of the distribution of the heterozygosity rate of your subjects.
@@ -172,7 +171,7 @@ plink --bfile HapMap_3_r3_9 --remove het_fail_ind.txt --make-bed --out HapMap_3_
 
 ############################################################
 ```
-### Step B.1.6
+### Step B.1.6 - Relatedness
 
 ```bash
 # It is essential to check datasets you analyse for cryptic relatedness.
@@ -220,13 +219,16 @@ plink --bfile HapMap_3_r3_11 --remove 0.2_low_call_rate_pihat.txt --make-bed --o
 ################################################################################################################################
 ```
 
-## B.2. Multi-dimensional scaling (MDS) with PLINK 1.9
+## B.2 - Multi-dimensional scaling (MDS) with PLINK 1.9 & Population stratification
 
-### B.2.1 1000 Genomes data processing
+### B.2.1 - 1000 Genomes data processing
 
 We provided the binary files derived from the VCF file of the 1000 Genomes to avoid time-consuming download (>60G file) and conversion steps (VCF to binary files).
 
 ```bash
+# Change directory to a folder on your UNIX device containing all files from 2_Population_stratification.zip:
+# cd <path-to-downloaded-material>/2_Population_stratification
+
 ## Download 1000 Genomes data ##
 # This file from the 1000 Genomes contains genetic data of 629 individuals from different ethnic backgrounds.
 # Note, this file is quite large (>60 gigabyte).  
@@ -236,47 +238,47 @@ We provided the binary files derived from the VCF file of the 1000 Genomes to av
 
 # Convert vcf to Plink format.
 # plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes
-# /apps/plink_v1.90b6.26/plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes
+# plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes
 
 # Noteworthy, the file 'ALL.2of4intersection.20100804.genotypes.bim' contains SNPs without an rs-identifier, these SNPs are indicated with ".". This can also be observed in the file 'ALL.2of4intersection.20100804.genotypes.vcf.gz'. To check this file use this command: zmore ALL.2of4intersection.20100804.genotypes.vcf.gz .
 # The missing rs-identifiers in the 1000 Genomes data are not a problem for this tutorial.
 # However, for good practice, we will assign unique indentifiers to the SNPs with a missing rs-identifier (i.e., the SNPs with ".").
 
-# /apps/plink_v1.90b6.26/plink --bfile ALL.2of4intersection.20100804.genotypes --set-missing-var-ids @:#[b37]\$1,\$2 --make-bed --out ALL.2of4intersection.20100804.genotypes_no_missing_IDs
+# plink --bfile ALL.2of4intersection.20100804.genotypes --set-missing-var-ids @:#[b37]\$1,\$2 --make-bed --out ALL.2of4intersection.20100804.genotypes_no_missing_IDs
 
 ## QC on 1000 Genomes data.
 # Remove variants based on missing genotype data.
-/apps/plink_v1.90b6.26/plink --bfile ALL.2of4intersection.20100804.genotypes_no_missing_IDs --geno 0.2 --allow-no-sex --make-bed --out 1kG_MDS
+plink --bfile ALL.2of4intersection.20100804.genotypes_no_missing_IDs --geno 0.2 --allow-no-sex --make-bed --out 1kG_MDS
 
 # Remove individuals based on missing genotype data.
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS --mind 0.2 --allow-no-sex --make-bed --out 1kG_MDS2
+plink --bfile 1kG_MDS --mind 0.2 --allow-no-sex --make-bed --out 1kG_MDS2
 
 # Remove variants based on missing genotype data.
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS2 --geno 0.02 --allow-no-sex --make-bed --out 1kG_MDS3
+plink --bfile 1kG_MDS2 --geno 0.02 --allow-no-sex --make-bed --out 1kG_MDS3
 
 # Remove individuals based on missing genotype data.
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS3 --mind 0.02 --allow-no-sex --make-bed --out 1kG_MDS4
+plink --bfile 1kG_MDS3 --mind 0.02 --allow-no-sex --make-bed --out 1kG_MDS4
 
 # Remove variants based on MAF.
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS4 --maf 0.05 --allow-no-sex --make-bed --out 1kG_MDS5
+plink --bfile 1kG_MDS4 --maf 0.05 --allow-no-sex --make-bed --out 1kG_MDS5
 
 # Extract the variants present in HapMap dataset from the 1000 genomes dataset.
 awk '{print$2}' HapMap_3_r3_12.bim > HapMap_SNPs.txt
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS5 --extract HapMap_SNPs.txt --make-bed --out 1kG_MDS6
+plink --bfile 1kG_MDS5 --extract HapMap_SNPs.txt --make-bed --out 1kG_MDS6
 
 # Extract the variants present in 1000 Genomes dataset from the HapMap dataset.
 awk '{print$2}' 1kG_MDS6.bim > 1kG_MDS6_SNPs.txt
-/apps/plink_v1.90b6.26/plink --bfile HapMap_3_r3_12 --extract 1kG_MDS6_SNPs.txt --recode --make-bed --out HapMap_MDS
+plink --bfile HapMap_3_r3_12 --extract 1kG_MDS6_SNPs.txt --recode --make-bed --out HapMap_MDS
 # The datasets now contain the exact same variants.
 
 ## The datasets must have the same build. Change the build 1000 Genomes data build.
 awk '{print$2,$4}' HapMap_MDS.map > buildhapmap.txt
 # buildhapmap.txt contains one SNP-id and physical position per line.
 
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS6 --update-map buildhapmap.txt --make-bed --out 1kG_MDS7
+plink --bfile 1kG_MDS6 --update-map buildhapmap.txt --make-bed --out 1kG_MDS7
 # 1kG_MDS7 and HapMap_MDS now have the same build.
 ```
-### B.2.2 Merge the HapMap and 1000 Genomes data sets
+### B.2.2 - Merge the HapMap and 1000 Genomes data sets
 
 ```bash
 # Prior to merging 1000 Genomes data with the HapMap data we want to make sure that the files are mergeable, for this we conduct 3 steps:
@@ -288,7 +290,7 @@ awk '{print$2,$4}' HapMap_MDS.map > buildhapmap.txt
 
 # 1) set reference genome 
 awk '{print$2,$5}' 1kG_MDS7.bim > 1kg_ref-list.txt
-/apps/plink_v1.90b6.26/plink --bfile HapMap_MDS --reference-allele 1kg_ref-list.txt --make-bed --out HapMap-adj
+plink --bfile HapMap_MDS --reference-allele 1kg_ref-list.txt --make-bed --out HapMap-adj
 # The 1kG_MDS7 and the HapMap-adj have the same reference genome for all SNPs.
 # This command will generate some warnings for impossible A1 allele assignment.
 
@@ -304,7 +306,7 @@ sort 1kGMDS7_tmp HapMap-adj_tmp |uniq -u > all_differences.txt
 awk '{print$1}' all_differences.txt | sort -u > flip_list.txt
 # Generates a file of 812 SNPs. These are the non-corresponding SNPs between the two files. 
 # Flip the 812 non-corresponding SNPs. 
-/apps/plink_v1.90b6.26/plink --bfile HapMap-adj --flip flip_list.txt --reference-allele 1kg_ref-list.txt --make-bed --out corrected_hapmap
+plink --bfile HapMap-adj --flip flip_list.txt --reference-allele 1kg_ref-list.txt --make-bed --out corrected_hapmap
 
 # Check for SNPs which are still problematic after they have been flipped.
 awk '{print$2,$5,$6}' corrected_hapmap.bim > corrected_hapmap_tmp
@@ -316,20 +318,20 @@ awk '{print$1}' uncorresponding_SNPs.txt | sort -u > SNPs_for_exlusion.txt
 # The command above generates a list of the 42 SNPs which caused the 84 differences between the HapMap and the 1000 Genomes data sets after flipping and setting of the reference genome.
 
 # Remove the 42 problematic SNPs from both datasets.
-/apps/plink_v1.90b6.26/plink --bfile corrected_hapmap --exclude SNPs_for_exlusion.txt --make-bed --out HapMap_MDS2
-/apps/plink_v1.90b6.26/plink --bfile 1kG_MDS7 --exclude SNPs_for_exlusion.txt --make-bed --out 1kG_MDS8
+plink --bfile corrected_hapmap --exclude SNPs_for_exlusion.txt --make-bed --out HapMap_MDS2
+plink --bfile 1kG_MDS7 --exclude SNPs_for_exlusion.txt --make-bed --out 1kG_MDS8
 
 # Merge HapMap with 1000 Genomes Data.
-/apps/plink_v1.90b6.26/plink --bfile HapMap_MDS2 --bmerge 1kG_MDS8.bed 1kG_MDS8.bim 1kG_MDS8.fam --allow-no-sex --make-bed --out MDS_merge2
+plink --bfile HapMap_MDS2 --bmerge 1kG_MDS8.bed 1kG_MDS8.bim 1kG_MDS8.fam --allow-no-sex --make-bed --out MDS_merge2
 
 # Note, we are fully aware of the sample overlap between the HapMap and 1000 Genomes datasets. However, for the purpose of this tutorial this is not important.
 
 ## Perform MDS on HapMap-CEU data anchored by 1000 Genomes data.
 # Using a set of pruned SNPs
-/apps/plink_v1.90b6.26/plink --bfile MDS_merge2 --extract indepSNP.prune.in --genome --out MDS_merge2
-/apps/plink_v1.90b6.26/plink --bfile MDS_merge2 --read-genome MDS_merge2.genome --cluster --mds-plot 10 --out MDS_merge2
+plink --bfile MDS_merge2 --extract indepSNP.prune.in --genome --out MDS_merge2
+plink --bfile MDS_merge2 --read-genome MDS_merge2.genome --cluster --mds-plot 10 --out MDS_merge2
 ```
-### B.2.3 MDS-plot
+### B.2.3 - MDS-plot - Population stratification
 
 ```bash
 # Download the file with population information of the 1000 genomes dataset.
@@ -370,13 +372,13 @@ Rscript MDS_merged.R
 awk '{ if ($4 <-0.04 && $5 >0.03) print $1,$2 }' MDS_merge2.mds > EUR_MDS_merge2
 
 # Extract these individuals in HapMap data.
-/apps/plink_v1.90b6.26/plink --bfile HapMap_3_r3_12 --keep EUR_MDS_merge2 --make-bed --out HapMap_3_r3_13
+plink --bfile HapMap_3_r3_12 --keep EUR_MDS_merge2 --make-bed --out HapMap_3_r3_13
 # Note, since our HapMap data did include any ethnic outliers, no individuls were removed at this step. However, if our data would have included individuals outside of the thresholds we set, then these individuals would have been removed.
 
 ## Create covariates based on MDS.
 # Perform an MDS ONLY on HapMap data without ethnic outliers. The values of the 10 MDS dimensions are subsequently used as covariates in the association analysis in the third tutorial.
-/apps/plink_v1.90b6.26/plink --bfile HapMap_3_r3_13 --extract indepSNP.prune.in --genome --out HapMap_3_r3_13
-/apps/plink_v1.90b6.26/plink --bfile HapMap_3_r3_13 --read-genome HapMap_3_r3_13.genome --cluster --mds-plot 10 --out HapMap_3_r3_13_mds
+plink --bfile HapMap_3_r3_13 --extract indepSNP.prune.in --genome --out HapMap_3_r3_13
+plink --bfile HapMap_3_r3_13 --read-genome HapMap_3_r3_13.genome --cluster --mds-plot 10 --out HapMap_3_r3_13_mds
 
 # Change the format of the .mds file into a plink covariate file.
 awk '{print$1, $2, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13}' HapMap_3_r3_13_mds.mds > covar_mds.txt
@@ -392,10 +394,10 @@ awk '{print$1, $2, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13}' HapMap_3_r3_13_m
 
 # For the association analyses we use the files generated in the previous tutorial (population stratification), named: HapMap_3_r3_13 (with .bed, .bim, and .fam. extensions) and covar_mds.txt
 
-# Copy the bfile HapMap_3_r3_13 from the previous tutorial to the current directory.
-cp HOME/{user}/{path/ 2_Population_stratification}/HapMap_3_r3_13.* HOME/{user}/{path/3_Main_script_association_GWAS.txt}
-# Copy the covar_mds.txt from the previous tutorial in the current directory.
-cp HOME/{user}/{path/ 2_Population_stratification}/covar_mds.txt HOME/{user}/{path/3_Main_script_association_GWAS.txt}
+# # Copy the bfile HapMap_3_r3_13 from the previous tutorial to the current directory.
+# cp HOME/{user}/{path/ 2_Population_stratification}/HapMap_3_r3_13.* HOME/{user}/{path/3_Main_script_association_GWAS.txt}
+# # Copy the covar_mds.txt from the previous tutorial in the current directory.
+# cp HOME/{user}/{path/ 2_Population_stratification}/covar_mds.txt HOME/{user}/{path/3_Main_script_association_GWAS.txt}
 
 # For binary traits.
 
@@ -438,13 +440,15 @@ awk '{ if ($4 >= 21595000 && $4 <= 21605000 && $1 == 22) print $2 }' HapMap_3_r3
 plink --bfile HapMap_3_r3_13 --extract subset_snp_chr_22.txt --make-bed --out HapMap_subset_for_perm
 # Perform 1000000 perrmutations.
 plink --bfile HapMap_subset_for_perm --assoc --mperm 1000000 --out subset_1M_perm_result
-
-plink --bfile HapMap_subset_for_perm --covar covar_mds.txt --hide-covar --logistic --mperm 1000000 --out subset_1M_perm_result_log_covar
+# Perform 1000 perrmutations.
+plink --bfile HapMap_subset_for_perm --covar covar_mds.txt --hide-covar --logistic --mperm 1000 --out subset_1K_perm_result_log_covar
 
 # Order your data, from lowest to highest p-value.
-sort -gk 4 subset_1M_perm_result.assoc.mperm > sorted_subset.txt
+sort -gk 4 subset_1M_perm_result.assoc.mperm > sorted_subset_1M_perm.txt
+sort -gk 4 subset_1K_perm_result_log_covar.assoc.logistic.mperm > sorted_subset_1K_perm_log.txt
 # Check ordered permutation results
-head sorted_subset.txt
+head sorted_subset_1M_perm.txt
+head sorted_subset_1K_perm_log.txt
 
 #####################################################################
 
@@ -458,18 +462,5 @@ head sorted_subset.txt
 
 Rscript --no-save Manhattan_plot.R
 Rscript --no-save QQ_plot.R
-
-# Please read below when you encountered an error:
-# Note, the mirror used to download the package qqman can no longer by active, which will result in an error (so below for specific error).
-# If you encounter this error, please contact me at a.t.marees@amc.uva.nl.
-# This error can simply be resolved by changing the addresses in the scripts: Manhattan_plot.R and QQ_plot.R.
-# Simply change the address (http://cran...) in line below, in both Rscripts (Manhattan_plot.R and QQ_plot.R) with (for example) https://cran.univ-paris1.fr/ .
-# install.packages("qqman",repos="http://cran.cnr.berkeley.edu/",lib="~" ) # location of installation can be changed but has to correspond with the library location
-
-# Example error:
-# "Error in library("qqman", lib.loc = "-") :
-#	there is no package called 'qqman'
-#Execution halted"
-
 #######################################################
 ```
