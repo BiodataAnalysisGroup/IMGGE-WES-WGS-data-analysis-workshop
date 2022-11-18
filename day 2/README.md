@@ -9,7 +9,7 @@
   For more information have a look at both the [documentaion](https://cnvkit.readthedocs.io/en/stable/) and the corresponding [publication](https://doi.org/10.1371/journal.pcbi.1004873) .
   
   
- ### Commands
+ ### Command Info
  
 - Copy number calling pipeline
 
@@ -45,7 +45,9 @@ Exons in the human genome have an average size of about 200bp. The target bin si
 
 An “access” file precomputed for the UCSC reference human genome build hg19, with some known low-mappability regions excluded, is included in the directory ([useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)).
 
-`antitarget`:
+`antitarget`: Given a “target” BED file that lists the chromosomal coordinates of the tiled regions used for targeted resequencing, derive a BED file off-target/”antitarget” regions. Certain genomic regions cannot be mapped by short-read resequencing (see access); we can avoid them when calculating the antitarget locations by passing the locations of the accessible sequence regions with the `-g` or `--access` option. CNVkit will then compute “antitarget” bins only within the accessible genomic regions specified in the “access” file.
+
+Each contiguous off-target region is divided into equal-sized bins such that the average bin size within the region is as close as possible to the size specified by the user. The user can select an appropriate off-target bin size by calculating the product of the average target region size and the fold-enrichment of sequencing reads in targeted regions, such that roughly the same number of reads are mapped to on– and off-target bins on average. In an effort to maximize the number of bins, CNVkit will deviate from the user-specified bin size to fit bins into small regions, such as introns, that are restricted in size. 
 
 `autobin`:
 
@@ -74,7 +76,8 @@ An “access” file precomputed for the UCSC reference human genome build hg19,
 `genemetrics`:
 
 
- 
+  ### Pipeline
+  
  All of the above commands assembled in the following pipeline, which has both a user defined  and an automated version through `batch` command.
  
  ```bash
