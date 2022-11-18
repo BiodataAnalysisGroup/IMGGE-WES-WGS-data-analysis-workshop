@@ -71,7 +71,7 @@ Samples:
 
 - [Tumor_R2](https://zenodo.org/record/2582555/files/SLGFSK-T_231336_r2_chr5_12_17.fastq.gz)
 
-but the processed files will be given to you during the workshop.
+but the processed files, along with the corresponding VCF file, will be given to you during the workshop.
 
 ## Day 3
 
