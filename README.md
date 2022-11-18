@@ -10,7 +10,7 @@ To install the computational environment required for the execution of the prese
 - Ubuntu or Debian from the Microsoft Store
 
 # Installation guidelines for software dependencies
-Following the installation of WSL2, open a WSL instance and execute within the `/installation_scripts` directory the following:
+Following the installation of WSL2, open a WSL instance within the `/installation_scripts` directory and execute the following:
 
 ```bash
 bash wes_wgs_tutorial_software_installation.sh
@@ -18,9 +18,9 @@ bash wes_wgs_tutorial_software_installation.sh
 
 to automatically set up and check Miniconda and the conda environments for: 
 
-1. Day 1 
-2. CNVkit (Day 2)
-3. PLINK 1.9 (Day 2)
+1. **Variant calling workflow** (Day 1)
+2. **CNVkit** (Day 2)
+3. **PLINK 1.9** (Day 2)
 
 The `/installation_scripts` directory contains the required YAML files for this purpose.
 
