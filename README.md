@@ -46,6 +46,9 @@ Pre-mapped BAM files are also available for all three samples (although mapping 
 Download all files in the same folder, where the tutorial will take place. Decompress the files for reference genome (hg19_chr8.fa.gz) and dbSNP 138 (dbsnp_138.hg19.chr8.vcf.gz) using any appropriate tool (e.g., `gunzip`) beforehand to be ready for the tutorial (as it can be time-consuming).
 
 ## Day 2
+
+### Required files
+
 Some of the files required for day2 of the tutorial can be downloaded directly from here:
 
 - [refFlat.txt](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/refFlat.txt)
