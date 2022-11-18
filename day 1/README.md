@@ -1,3 +1,5 @@
+# Day 1
+
 # A. Quick overview of basic Unix commands (Navigating Files and Directories, Working With Files and Directories, Pipes and Filters, Loops, Finding Things)  
 
 ## Introduction
