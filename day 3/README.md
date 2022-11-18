@@ -2,7 +2,7 @@
 
 # Introduction to Common Workflow Language (CWL) and Docker
 
-# Installation notes for WSL2 and Docker Desktop
+## Installation notes for WSL2 and Docker Desktop
 
 To install the computational environment required for the execution of the present tutorial, follow the instructions of the [cwltool installation tutorial](https://github.com/common-workflow-language/cwltool), specifically the section on **MS Windows users**. There you will find detailed instructions on how to activate and install:
 
