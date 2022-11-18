@@ -73,6 +73,9 @@ Each contiguous off-target region is divided into equal-sized bins such that the
 
 `genemetrics`:
 
+  ### BAM files
+  
+ The BAM files that are used throughout this tutorial are processed following the pipeline from this [Galaxy Training Tutorial](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/somatic-variants/tutorial.html) up untill the `RmDup` command to remove duplicate reads.
 
   ### Pipeline
   
