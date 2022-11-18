@@ -55,7 +55,19 @@ Each contiguous off-target region is divided into equal-sized bins such that the
 
 Additional information can be associated with each bin for later use in bias correction and segmentation. If the user provides a FASTA file of the reference genome at this step, the GC content and repeat-masked fraction of each binned corresponding genomic region are calculated. CNVkit calculates the fraction of each bin that is masked and records this fraction in an additional column in the reference file, along with GC, average log2 read depth, and spread.
 
-`fix`:
+`fix`: combines a single sample’s on– and off-target binned read depths, removes bins failing predefined criteria, corrects for systematic biases in bin coverage (see below), subtracts the reference log2 read depths, and finally median-centers the corrected copy ratios.
+
+Each bin is then assigned a weight to be used in segmentation and plotting. Each bin’s weight is calculated according to bin size, difference from the global median coverage (if at least one control sample is provided), and the spread of normalized coverages in the control pool (if more than one control sample is provided). Finally, the overall variability of bin log2 ratio values is compared between on- and off-target bins, and the more variable of the two sets is downweighted in proportion.
+
+- Correction of coverage biases:
+
+  - Genomic GC content: DNA regions with extreme GC content are less accessible to hybridization and amenable to amplification during library preparation. The degree of GC bias can vary between samples due to differences such as the quality of each sample’s DNA or efficiency of hybridization between library preparations. To remove this bias, CNVkit applies a rolling median correction (see below) to GC values on both the target and off-target bins, independently.
+
+  -  Sequence repeats: Repetitive sequences in the genome can complicate read-depth calculations, as these regions often show high variability in coverage from sample to sample. This variability may be due to differences in the efficiency of the blocking step during library preparation. The presence of sequence repeats serves as an indicator for regions prone to these biases.
+
+  - Target density: i) The “shoulders” of each interval showed reduced read depth due to incomplete sequence match to the bait, creating a negative bias in the observed read depth inside the interval near each edge and ii) in the “flanks” of the baited interval due to the same mechanism, where targets are closely spaced or adjacent, the flanking read depth may overlap with a neighboring target, creating a positive bias in its observed read depth.
+
+  While the density bias can be significantly reduced by normalizing each sample to a reference, it may vary between samples due to differences in the insert sizes of    sequence fragments introduced during the step of DNA fragmentation of the library preparation, and thus should still be accounted for even if a matched normal          comparison exists. Density bias being related to the capture, CNVkit only applies this correction to the on-target bins.
 
 `segment`:
 
@@ -75,7 +87,7 @@ Additional information can be associated with each bin for later use in bias cor
 
 `genemetrics`:
 
-- Read-depth bias corrections:
+- Correction of coverage biases:
 
   - 
 
