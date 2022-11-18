@@ -9,8 +9,71 @@
   For more information have a look at both the [documentaion](https://cnvkit.readthedocs.io/en/stable/) and the corresponding [publication](https://doi.org/10.1371/journal.pcbi.1004873) .
   
   
- ### Command Line 
- The following pipeline has both a user defined  and an automated version through `batch` command
+ ### Commands
+ 
+- Copy number calling pipeline
+
+`batch`: Run the CNVkit pipeline on one or more BAM files which is equivalent to:
+
+```bash
+cnvkit.py access hg19.fa -o access.hg19.bed
+cnvkit.py autobin *.bam -t baits.bed -g access.hg19.bed [--annotate refFlat.txt --short-names]
+
+# For each sample...
+cnvkit.py coverage Sample.bam baits.target.bed -o Sample.targetcoverage.cnn
+cnvkit.py coverage Sample.bam baits.antitarget.bed -o Sample.antitargetcoverage.cnn
+
+# With all normal samples...
+cnvkit.py reference *Normal.{,anti}targetcoverage.cnn --fasta hg19.fa -o my_reference.cnn
+
+# For each tumor sample...
+cnvkit.py fix Sample.targetcoverage.cnn Sample.antitargetcoverage.cnn my_reference.cnn -o Sample.cnr
+cnvkit.py segment Sample.cnr -o Sample.cns
+
+# Optionally, with --scatter and --diagram
+cnvkit.py scatter Sample.cnr -s Sample.cns -o Sample-scatter.pdf
+cnvkit.py diagram Sample.cnr -s Sample.cns -o Sample-diagram.pdf
+
+```
+`guess_baits.py`: Use the read depths in one or more given BAM files to infer which regions were targeted in a hybrid capture or targeted amplicon capture sequencing protocol. This script can be used in case the original BED file of targeted intervals is unavailable. 
+
+`target`: Prepare a BED file of baited regions for use with CNVkit. Since these regions (usually exons) may be of unequal size, the `--split` option divides the larger regions so that the average bin size after dividing is close to the size specified by `--average-size`. The `--annotate` option can add or replace these labels. Gene annotation databases, e.g. RefSeq or Ensembl, are available in “flat” format from UCSC (e.g. [refFlat.txt for hg19](http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/refFlat.txt.gz)).
+
+Exons in the human genome have an average size of about 200bp. The target bin size default of 267 is chosen so that splitting larger exons will produce bins with a minimum size of 200. Since bins that contain fewer reads result in a noisier copy number signal, this approach ensures the “noisiness” of the bins produced by splitting larger exons will be no worse than average.
+
+`access`:
+
+`antitarget`:
+
+`autobin`:
+
+`coverage`:
+
+`reference`:
+
+`fix`:
+
+`segment`:
+
+`call`:
+
+- Plots and graphics
+
+`scatter`:
+
+`diagram`:
+
+`heatmap`:
+
+- Text and tabular reports
+
+`breaks`:
+
+`genemetrics`:
+
+
+ 
+ All of the above commands assembled in the following pipeline, which has both a user defined  and an automated version through `batch` command.
  
  ```bash
 ##################################
