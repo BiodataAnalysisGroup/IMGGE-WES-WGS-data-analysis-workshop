@@ -56,3 +56,14 @@ conda activate plink_env
 plink -h
 R --version
 Rscript -e "library(qqman)"
+
+# 5. CWL runner
+
+# switch to base conda env
+conda deactivate
+
+# install cwltool
+sudo apt-get update
+sudo apt-get install cwltool
+
+# If you encounter an error, follow the cwltool installation instructions here: https://github.com/common-workflow-language/cwltool

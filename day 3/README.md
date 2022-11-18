@@ -10,6 +10,12 @@ To install the computational environment required for the execution of the prese
 - Docker Desktop
 - Ubuntu or Debian from the Microsoft Store
 
+## Software dependencies
+
+- A WSL2 distro (Ubuntu/Debian) 
+- Docker Desktop (connected to WSL2)
+- A CWL runner (e.g., cwltool)
+
 ## Overview
 
 Reproducible research is an important part of good scientific practice. Establishing robust computational analysis workflow facilitates reproducible research. There has been a strong emphasis on establishing graphic workflow management systems, such as Galaxy and Knime. However, the landscape and complexity of Linux command line tools for workflow management is vast and complicated. We aim to take advantage of European/International leaders in the field to present current scientific workflow paradigms and a lead workshops to implement a basic workflow. Topics covered include workflows and containerization.
