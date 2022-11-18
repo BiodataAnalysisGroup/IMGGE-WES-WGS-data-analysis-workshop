@@ -41,7 +41,9 @@ cnvkit.py diagram Sample.cnr -s Sample.cns -o Sample-diagram.pdf
 
 Exons in the human genome have an average size of about 200bp. The target bin size default of 267 is chosen so that splitting larger exons will produce bins with a minimum size of 200. Since bins that contain fewer reads result in a noisier copy number signal, this approach ensures the “noisiness” of the bins produced by splitting larger exons will be no worse than average.
 
-`access`:
+`access`: Calculate the sequence-accessible coordinates in chromosomes from the given reference genome, output as a BED file. Many fully sequenced genomes, including the human genome, contain large regions of DNA that are inaccessable to sequencing. (These are mainly the centromeres, telomeres, and highly repetitive regions.) In the reference genome sequence these regions are filled in with large stretches of “N” characters. These regions cannot be mapped by resequencing, so CNVkit avoids them when calculating the antitarget bin locations. This command computes the locations of the accessible sequence regions for a given reference genome based on these masked-out sequences, treating long spans of ‘N’ characters as the inaccessible regions and outputting the coordinates of the regions between them.
+
+An “access” file precomputed for the UCSC reference human genome build hg19, with some known low-mappability regions excluded, is included in the directory ([useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)).
 
 `antitarget`:
 
