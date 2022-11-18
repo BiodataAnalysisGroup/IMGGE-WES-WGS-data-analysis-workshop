@@ -14,6 +14,7 @@ Following the installation of WSL2, open a WSL instance within the `/installatio
 
 ```bash
 bash wes_wgs_tutorial_software_installation.sh
+bash setup_cnv.sh
 ```
 
 to automatically set up and check Miniconda and the conda environments for: 
