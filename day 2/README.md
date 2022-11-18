@@ -49,9 +49,7 @@ An “access” file precomputed for the UCSC reference human genome build hg19,
 
 Each contiguous off-target region is divided into equal-sized bins such that the average bin size within the region is as close as possible to the size specified by the user. The user can select an appropriate off-target bin size by calculating the product of the average target region size and the fold-enrichment of sequencing reads in targeted regions, such that roughly the same number of reads are mapped to on– and off-target bins on average. In an effort to maximize the number of bins, CNVkit will deviate from the user-specified bin size to fit bins into small regions, such as introns, that are restricted in size. 
 
-`autobin`:
-
-`coverage`:
+`coverage`: Calculate coverage in the given regions from BAM read depths.
 
 `reference`:
 
