@@ -46,6 +46,29 @@ Pre-mapped BAM files are also available for all three samples (although mapping 
 Download all files in the same folder, where the tutorial will take place. Decompress the files for reference genome (hg19_chr8.fa.gz) and dbSNP 138 (dbsnp_138.hg19.chr8.vcf.gz) using any appropriate tool (e.g., `gunzip`) beforehand to be ready for the tutorial (as it can be time-consuming).
 
 ## Day 2
+Some of the files required for day2 of the tutorial can be downloaded directly from here:
+
+- [refFlat.txt](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/refFlat.txt)
+
+- [access regions .bed file](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)
+
+- [BED file for the captured reagions](https://zenodo.org/record/5697358/files/capture_targets_chr5_12_17.bed)
+
+The original `fasta/fastq` files can be found here:
+
+- [reference file](https://zenodo.org/record/2582555/files/hg19.chr5_12_17.fa.gz)
+
+Samples:
+
+- [Normal_R1](https://zenodo.org/record/2582555/files/SLGFSK-N_231335_r1_chr5_12_17.fastq.gz)
+
+- [Normal_R2](https://zenodo.org/record/2582555/files/SLGFSK-N_231335_r2_chr5_12_17.fastq.gz)
+
+- [Tumor_R1](https://zenodo.org/record/2582555/files/SLGFSK-T_231336_r1_chr5_12_17.fastq.gz)
+
+- [Tumor_R2](https://zenodo.org/record/2582555/files/SLGFSK-T_231336_r2_chr5_12_17.fastq.gz)
+
+but the processed files will be given to you during the workshop.
 
 ## Day 3
 
