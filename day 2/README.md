@@ -77,31 +77,33 @@ Each bin is then assigned a weight to be used in segmentation and plotting. Each
   All of the information needed to calculate the biases at each bin is stored in the reference file. For each of the biases (GC content, repeat-masked fraction, target   density), the bias value is calculated for each bin. Next, bins are sorted by bias value. A rolling median is then calculated across the bin log2 ratios ordered by     bias value to obtain a midpoint log2 ratio value representing the expected bias for each bin. Finally, this value is subtracted from the original bin log2 ratio for   the given sample to offset the observed bias. 
   
   
-`segment`: sample’s corrected bin-level copy ratio estimates can be segmented into discrete copy-number regions. The bin log2 ratio values are first optionally filtered for outliers, defined as a fixed multiple of the 95th quartile in a rolling window. The default segmentation algorithm used is circular binary segmentation (CBS).
+`segment`: sample’s corrected bin-level copy ratio estimates can be segmented into discrete copy-number regions. The bin log2 ratio values are first optionally filtered for outliers, defined as a fixed multiple of the 95th quartile in a rolling window. The default segmentation algorithm used is circular binary segmentation (CBS). Infer discrete copy number segments from the given coverage table. 
+
+If a VCF file is given with the `--vcf` option, then after segmenting log2 ratios, a second pass of segmentation will run within each log2-ratio-based segment on the SNP allele frequencies loaded from the VCF.
 
 `call`: rounds the log2 ratios to the nearest integer absolute copy number given the normal ploidy of each chromosome, or directly maps segment log2 ratios to absolute copy number states given a set of numeric thresholds.
 
 - Plots and graphics
 
-`scatter`:
+`scatter`: Plot bin-level log2 coverages and segmentation calls together. Without any further arguments, this plots the genome-wide copy number in a form familiar to those who have used array CGH. The options `--chromosome` and `--gene` focus the plot on the specified region; the genes in the specified region or with the specified names will be highlighted and labeled in the plot. 
 
-`diagram`:
+The allelic frequencies of heterozygous SNPs can be viewed alongside copy number by passing variants as a VCF file with the `-v` option. These allele frequences are rendered in a subplot below the CNV scatter plot.
 
-`heatmap`:
+`diagram`: Draw copy number (either individual bins (.cnn, .cnr) or segments (.cns)) on chromosomes as an ideogram. If both the bin-level log2 ratios and segmentation calls are given, show them side-by-side on each chromosome (segments on the left side, bins on the right side).
+
+`heatmap`: Draw copy number (either bins (.cnn, .cnr) or segments (.cns)) for multiple samples as a heatmap.
 
 - Text and tabular reports
 
-`breaks`:
+`breaks`: List the targeted genes in which a segmentation breakpoint occurs. This helps to identify genes in which (a) an unbalanced fusion or other structural rearrangement breakpoint occured, or (b) CNV calling is simply difficult due to an inconsistent copy number signal.
 
-`genemetrics`:
+`genemetrics`: Identify targeted genes with copy number gain or loss above or below a threshold. The first four columns of output table show each targeted gene’s name and its genomic coordinates (based on the first and last bins with that label in the original target BED file, and thus the .cnr file). With segments (-s):
 
-- Correction of coverage biases:
+  - *log2*: The log2 ratio value of the segment covering the gene, i.e. weighted mean of all bins covered by the whole segment, not just this gene.
+  - *depth*,*weight*, *probes*: As above.
+  - *seg_weight*: The sum of the weights of the bins supporting the segment.
+  - *seg_probes*: The number of probes supporting the segment.
 
-  - 
-
-  -  
-
-  - 
 
 ### BAM files
   
