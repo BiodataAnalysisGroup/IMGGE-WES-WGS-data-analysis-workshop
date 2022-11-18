@@ -51,15 +51,35 @@ Each contiguous off-target region is divided into equal-sized bins such that the
 
 `coverage`: computes the log2 mean read depth in each bin for a sample using an alignment of sequencing reads in BAM format and the positions of the on– or off-target bins in BED or interval list format. For each bin the read depths at each base pair in the bin are calculated and summed and then divided by the size of the bin. The output is a table of the average read depths in each of the given bins log2-transformed and centered to the median read depth of all autosomes.
 
-`reference`:  estimates the expected read depth of each on– and off-target bin across a panel of control or comparison samples to produce a reference copy-number profile that can then be used to correct other test samples. At each genomic bin, the read depths in each of the given control samples are extracted. Read-depth bias corrections (see below) are performed on each of the control samples. In each bin, a weighted average of the log2 read depths among the control samples is calculated to indicate bins that systematically have higher or lower coverage, and the spread or statistical dispersion of log2 read depths indicates bins that have erratic coverage so that they can be de-emphasized at the segmentation step. A single paired control sample can also be used, or, in absence of any control samples, a “generic” reference can be constructed with a log2 read depth and spread of 0 assigned to all bins.
+`reference`:  estimates the expected read depth of each on– and off-target bin across a panel of control or comparison samples to produce a reference copy-number profile that can then be used to correct other test samples. At each genomic bin, the read depths in each of the given control samples are extracted. Read-depth bias corrections are performed on each of the control samples. 
+
+In each bin, i) a *weighted average of the log2 read depths* among the control samples is calculated to indicate bins that systematically have higher or lower coverage, and ii) the *spread or statistical dispersion of log2 read depths* indicates bins that have erratic coverage so that they can be de-emphasized at the segmentation step. A single paired control sample can also be used, or, in absence of any control samples, a “generic” reference can be constructed with a log2 read depth and spread of 0 assigned to all bins.
+
+
+<img src="figures/biases.png" alt="Negative and Positive Biases" width="800"/>
 
 Additional information can be associated with each bin for later use in bias correction and segmentation. If the user provides a FASTA file of the reference genome at this step, the GC content and repeat-masked fraction of each binned corresponding genomic region are calculated. CNVkit calculates the fraction of each bin that is masked and records this fraction in an additional column in the reference file, along with GC, average log2 read depth, and spread.
 
-`fix`:
+`fix`: combines a single sample’s on– and off-target binned read depths, removes bins failing predefined criteria, corrects for systematic biases in bin coverage (see below), subtracts the reference log2 read depths, and finally median-centers the corrected copy ratios.
 
-`segment`:
+Each bin is then assigned a weight to be used in segmentation and plotting. Each bin’s weight is calculated according to i) bin size, ii)difference from the global median coverage (if at least one control sample is provided), and iii) the spread of normalized coverages in the control pool (if more than one control sample is provided). Finally, the overall variability of bin log2 ratio values is compared between on- and off-target bins, and the more variable of the two sets is downweighted in proportion.
 
-`call`:
+- Correction of coverage biases:
+
+  - Genomic GC content: DNA regions with extreme GC content are less accessible to hybridization and amenable to amplification during library preparation. The degree of GC bias can vary between samples due to differences such as the quality of each sample’s DNA or efficiency of hybridization between library preparations. To remove this bias, CNVkit applies a rolling median correction (see below) to GC values on both the target and off-target bins, independently.
+
+  -  Sequence repeats: Repetitive sequences in the genome can complicate read-depth calculations, as these regions often show high variability in coverage from sample to sample. This variability may be due to differences in the efficiency of the blocking step during library preparation. The presence of sequence repeats serves as an indicator for regions prone to these biases.
+
+  - Target density: i) The “shoulders” of each interval showed reduced read depth due to incomplete sequence match to the bait, creating a negative bias in the observed read depth inside the interval near each edge and ii) in the “flanks” of the baited interval due to the same mechanism, where targets are closely spaced or adjacent, the flanking read depth may overlap with a neighboring target, creating a positive bias in its observed read depth.
+
+  While the density bias can be significantly reduced by normalizing each sample to a reference, it may vary between samples due to differences in the insert sizes of    sequence fragments introduced during the step of DNA fragmentation of the library preparation, and thus should still be accounted for even if a matched normal          comparison exists. Density bias being related to the capture, CNVkit only applies this correction to the on-target bins.
+
+  All of the information needed to calculate the biases at each bin is stored in the reference file. For each of the biases (GC content, repeat-masked fraction, target   density), the bias value is calculated for each bin. Next, bins are sorted by bias value. A rolling median is then calculated across the bin log2 ratios ordered by     bias value to obtain a midpoint log2 ratio value representing the expected bias for each bin. Finally, this value is subtracted from the original bin log2 ratio for   the given sample to offset the observed bias. 
+  
+  
+`segment`: sample’s corrected bin-level copy ratio estimates can be segmented into discrete copy-number regions. The bin log2 ratio values are first optionally filtered for outliers, defined as a fixed multiple of the 95th quartile in a rolling window. The default segmentation algorithm used is circular binary segmentation (CBS).
+
+`call`: rounds the log2 ratios to the nearest integer absolute copy number given the normal ploidy of each chromosome, or directly maps segment log2 ratios to absolute copy number states given a set of numeric thresholds.
 
 - Plots and graphics
 
@@ -75,7 +95,7 @@ Additional information can be associated with each bin for later use in bias cor
 
 `genemetrics`:
 
-- Read-depth bias corrections:
+- Correction of coverage biases:
 
   - 
 
