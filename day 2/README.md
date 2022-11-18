@@ -7,8 +7,10 @@
  ### About the library  
   
  ### Command Line 
+ The following pipeline has both a user defined  and an automated version through `batch` command
+ 
  ```bash
- ##################################
+##################################
 #     User defined pipeline      #
 ################################## 
 
