@@ -49,9 +49,11 @@ An “access” file precomputed for the UCSC reference human genome build hg19,
 
 Each contiguous off-target region is divided into equal-sized bins such that the average bin size within the region is as close as possible to the size specified by the user. The user can select an appropriate off-target bin size by calculating the product of the average target region size and the fold-enrichment of sequencing reads in targeted regions, such that roughly the same number of reads are mapped to on– and off-target bins on average. In an effort to maximize the number of bins, CNVkit will deviate from the user-specified bin size to fit bins into small regions, such as introns, that are restricted in size. 
 
-`coverage`: Calculate coverage in the given regions from BAM read depths.
+`coverage`: computes the log2 mean read depth in each bin for a sample using an alignment of sequencing reads in BAM format and the positions of the on– or off-target bins in BED or interval list format. For each bin the read depths at each base pair in the bin are calculated and summed and then divided by the size of the bin. The output is a table of the average read depths in each of the given bins log2-transformed and centered to the median read depth of all autosomes.
 
-`reference`:
+`reference`:  estimates the expected read depth of each on– and off-target bin across a panel of control or comparison samples to produce a reference copy-number profile that can then be used to correct other test samples. At each genomic bin, the read depths in each of the given control samples are extracted. Read-depth bias corrections (see below) are performed on each of the control samples. In each bin, a weighted average of the log2 read depths among the control samples is calculated to indicate bins that systematically have higher or lower coverage, and the spread or statistical dispersion of log2 read depths indicates bins that have erratic coverage so that they can be de-emphasized at the segmentation step. A single paired control sample can also be used, or, in absence of any control samples, a “generic” reference can be constructed with a log2 read depth and spread of 0 assigned to all bins.
+
+Additional information can be associated with each bin for later use in bias correction and segmentation. If the user provides a FASTA file of the reference genome at this step, the GC content and repeat-masked fraction of each binned corresponding genomic region are calculated. CNVkit calculates the fraction of each bin that is masked and records this fraction in an additional column in the reference file, along with GC, average log2 read depth, and spread.
 
 `fix`:
 
@@ -73,7 +75,15 @@ Each contiguous off-target region is divided into equal-sized bins such that the
 
 `genemetrics`:
 
-  ### BAM files
+- Read-depth bias corrections:
+
+  - 
+
+  -  
+
+  - 
+
+### BAM files
   
  The BAM files that are used throughout this tutorial are processed following the pipeline from this [Galaxy Training Tutorial](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/somatic-variants/tutorial.html) up untill the `RmDup` command to remove duplicate reads.
 
