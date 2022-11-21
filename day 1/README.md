@@ -205,19 +205,19 @@ proband_R1.fq.gz proband_R2.fq.gz
 mkdir trimmomatic_data
 # paired-end mode
 #
-trimmomatic PE -threads 16 -phred33 father_R1.fq.gz father_R2.fq.gz \
+trimmomatic PE -threads 4 -phred33 father_R1.fq.gz father_R2.fq.gz \
 trimmomatic_data/father_R1_paired.fq.gz trimmomatic_data/father_R1_unpaired.fq.gz \
 trimmomatic_data/father_R2_paired.fq.gz trimmomatic_data/father_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
 SLIDINGWINDOW:4:15 LEADING:5 TRAILING:3 MINLEN:36
 #
-trimmomatic PE -threads 16 -phred33 mother_R1.fq.gz mother_R2.fq.gz \
+trimmomatic PE -threads 4 -phred33 mother_R1.fq.gz mother_R2.fq.gz \
 trimmomatic_data/mother_R1_paired.fq.gz trimmomatic_data/mother_R1_unpaired.fq.gz \
 trimmomatic_data/mother_R2_paired.fq.gz trimmomatic_data/mother_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
 SLIDINGWINDOW:4:15 LEADING:5 TRAILING:3 MINLEN:36
 #
-trimmomatic PE -threads 16 -phred33 proband_R1.fq.gz proband_R2.fq.gz \
+trimmomatic PE -threads 4 -phred33 proband_R1.fq.gz proband_R2.fq.gz \
 trimmomatic_data/proband_R1_paired.fq.gz trimmomatic_data/proband_R1_unpaired.fq.gz \
 trimmomatic_data/proband_R2_paired.fq.gz trimmomatic_data/proband_R2_unpaired.fq.gz \
 ILLUMINACLIP:../Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True \
