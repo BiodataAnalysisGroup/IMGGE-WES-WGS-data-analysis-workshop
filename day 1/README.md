@@ -363,12 +363,20 @@ freebayes -f hg19_chr8.fa -C 2 -F 0.2 father_md.bam > father.vcf
 freebayes -f hg19_chr8.fa -C 2 -F 0.2 mother_md.bam > mother.vcf
 freebayes -f hg19_chr8.fa -C 2 -F 0.2 proband_md.bam > proband.vcf
 
+# Compress and index VCF files
+bgzip father.vcf
+tabix -p vcf father.vcf.gz
+bgzip mother.vcf
+tabix -p vcf mother.vcf.gz
+bgzip proband.vcf
+tabix -p vcf proband.vcf.gz
+
 # Variant filtering (bcftools) and index generation (tabix)
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz father.vcf | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o father_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz father.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o father_filtered.vcf.gz
 tabix -p vcf father_filtered.vcf.gz
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz mother.vcf | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o mother_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz mother.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o mother_filtered.vcf.gz
 tabix -p vcf mother_filtered.vcf.gz
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz proband.vcf | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o proband_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz proband.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o proband_filtered.vcf.gz
 tabix -p vcf proband_filtered.vcf.gz
 
 # Create list of VCF files
