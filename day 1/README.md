@@ -236,9 +236,9 @@ bwa index hg19_chr8.fa
 # Map pre-processed reads with BWA-MEM
 # Output all found alignments for single-end or unpaired paired-end reads. These alignments will be flagged as secondary alignments. (-a)
 # Mark shorter split hits as secondary (for Picard compatibility). (-M)
-bwa mem -t 16 -a -M hg19_chr8.fa trimmomatic_data/father_R1_paired.fq.gz trimmomatic_data/father_R2_paired.fq.gz > father.sam
-bwa mem -t 16 -a -M hg19_chr8.fa trimmomatic_data/mother_R1_paired.fq.gz trimmomatic_data/mother_R2_paired.fq.gz > mother.sam
-bwa mem -t 16 -a -M hg19_chr8.fa trimmomatic_data/proband_R1_paired.fq.gz trimmomatic_data/proband_R2_paired.fq.gz > proband.sam
+bwa mem -t 4 -a -M hg19_chr8.fa trimmomatic_data/father_R1_paired.fq.gz trimmomatic_data/father_R2_paired.fq.gz > father.sam
+bwa mem -t 4 -a -M hg19_chr8.fa trimmomatic_data/mother_R1_paired.fq.gz trimmomatic_data/mother_R2_paired.fq.gz > mother.sam
+bwa mem -t 4 -a -M hg19_chr8.fa trimmomatic_data/proband_R1_paired.fq.gz trimmomatic_data/proband_R2_paired.fq.gz > proband.sam
 ```
 
 ```bash
@@ -247,14 +247,14 @@ bwa mem -t 16 -a -M hg19_chr8.fa trimmomatic_data/proband_R1_paired.fq.gz trimmo
 # Explain SAM & BAM format
 
 # Convert SAM-to-BAM file
-samtools view --threads 16 -b father.sam > father.bam
-samtools view --threads 16 -b mother.sam > mother.bam
-samtools view --threads 16 -b proband.sam > proband.bam
+samtools view --threads 4 -b father.sam > father.bam
+samtools view --threads 4 -b mother.sam > mother.bam
+samtools view --threads 4 -b proband.sam > proband.bam
 
 # Sort reads based on genomic coordinates
-samtools sort --threads 16 -o father_sorted.bam father.bam
-samtools sort --threads 16 -o mother_sorted.bam mother.bam
-samtools sort --threads 16 -o proband_sorted.bam proband.bam
+samtools sort --threads 4 -o father_sorted.bam father.bam
+samtools sort --threads 4 -o mother_sorted.bam mother.bam
+samtools sort --threads 4 -o proband_sorted.bam proband.bam
 
 # Generate mapping statistics on BAM files
 # 1. FASTQC on sorted BAM files
@@ -297,9 +297,9 @@ Rscript summary_plot_generation.R
 # require flags with -f
 # read mapped in proper pair (0x2) - 2
 # not primary alignment (0x100) - 256
-samtools view --threads 16 -b -f 2 -o father_filtered.bam father_sorted.bam 
-samtools view --threads 16 -b -f 2 -o mother_filtered.bam mother_sorted.bam
-samtools view --threads 16 -b -f 2 -o proband_filtered.bam proband_sorted.bam
+samtools view --threads 4 -b -f 2 -o father_filtered.bam father_sorted.bam 
+samtools view --threads 4 -b -f 2 -o mother_filtered.bam mother_sorted.bam
+samtools view --threads 4 -b -f 2 -o proband_filtered.bam proband_sorted.bam
 ```
 
 ## 6. Variant calling (discuss VCF file format and annotation, Filtering / extraction of variants from defined genomic regions, impact of QC of the raw and mapped reads to the variant calling QC)
@@ -372,10 +372,10 @@ tabix -p vcf proband_filtered.vcf.gz
 ls *_filtered.vcf.gz > tmp_vcf_file_list.txt
 
 # Merge VCF 
-bcftools merge --threads 16 --filter-logic + --missing-to-ref -Oz --file-list tmp_vcf_file_list.txt | bcftools view --threads 16 -f PASS -Ov -o merged.vcf
+bcftools merge --threads 4 --filter-logic + --missing-to-ref -Oz --file-list tmp_vcf_file_list.txt | bcftools view --threads 4 -f PASS -Ov -o merged.vcf
 
 # Post-processing
-bcftools norm --threads 16 -f hg19_chr8.fa --multiallelics -both -Ov -o merged_norm.vcf merged.vcf
+bcftools norm --threads 4 -f hg19_chr8.fa --multiallelics -both -Ov -o merged_norm.vcf merged.vcf
 ```
 
 ## 7. Variant annotation
