@@ -354,6 +354,9 @@ picard MarkDuplicates \
 # Generate index (.fai) for the reference fasta
 samtools faidx hg19_chr8.fa
 
+# Generate indexes (.bai) for bam files
+samtools index *_md.bam
+
 ### Variant calling and filtering - FreeBayes/GATK HaplotypeCaller/bcftools ###
 # default settings (for low to high depth sequencing in haploid and diploid samples)
 freebayes -f hg19_chr8.fa -C 2 -F 0.2 father_md.bam > father.vcf
