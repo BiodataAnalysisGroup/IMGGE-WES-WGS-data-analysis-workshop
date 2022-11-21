@@ -193,12 +193,12 @@ trim_galore --help
 mkdir trim_galore_data
 # set the option --path_to_cutadapt to the Cutadapt executable if Cutadapt is not in the PATH (default)
 trim_galore --quality 25 -o trim_galore_data --gzip --fastqc --paired father_R1.fq.gz father_R2.fq.gz
-trim_galore --quality 25 -o trim_galore_data --gzip --fastqc --paired mother_R1.fq.gz mother_R1.fq.gz
+trim_galore --quality 25 -o trim_galore_data --gzip --fastqc --paired mother_R1.fq.gz mother_R2.fq.gz
 trim_galore --quality 25 -o trim_galore_data --gzip --fastqc --paired proband_R1.fq.gz proband_R2.fq.gz
 # OR in a single command
 trim_galore --quality 25 -o trim_galore_data --gzip --fastqc --paired \
 father_R1.fq.gz father_R2.fq.gz \
-mother_R1.fq.gz mother_R1.fq.gz \
+mother_R1.fq.gz mother_R2.fq.gz \
 proband_R1.fq.gz proband_R2.fq.gz
 
 # Trimmomatic
