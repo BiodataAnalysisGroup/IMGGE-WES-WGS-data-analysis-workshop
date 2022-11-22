@@ -115,7 +115,7 @@ do
 done
 
 # 4. custom script (e.g., in R) OR ready-to-use software solution (e.g., BAMStats (https://bamstats.sourceforge.net/))
-Rscript summary_plot_generation.R
+# Rscript summary_plot_generation.R
 
 # Filter the paired-end reads of all samples to retain only those read pairs, 
 # for which both the forward and the reverse read have been mapped to the reference successfully
@@ -177,7 +177,10 @@ java -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates \
 samtools faidx hg19_chr8.fa
 
 # Generate indexes (.bai) for bam files
-samtools index *_md.bam
+for i in $(ls *_md.bam)
+do
+    samtools index $i
+done
 
 ### Variant calling and filtering - FreeBayes/GATK HaplotypeCaller/bcftools ###
 # default settings (for low to high depth sequencing in haploid and diploid samples)
@@ -215,9 +218,13 @@ bcftools norm --threads 16 -f hg19_chr8.fa --multiallelics -both -Ov -o merged_n
 java -jar snpEff/snpEff.jar databases | grep -i "Homo_sapiens"
 # Build UCSC hg19 database
 java -jar snpEff/snpEff.jar download -v hg19
+# get snpeff and snpsift config file paths
+snpeff_config=$(find $CONDA_PREFIX -wholename *snpeff-5.1-2/snpEff.config)
+snpsift_config=$(find $CONDA_PREFIX -wholename *snpsift-5.1-0/snpEff.config)
+
 # Annotate with snpEff hg19 genome and dbSNP138 - hg19 - chr8
-java -jar snpEff/snpEff.jar ann -v -c snpEff/snpEff.config -noStats hg19 merged_norm.vcf | \
-java -jar snpEff/SnpSift.jar Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
+snpEff ann -v -c $snpeff_config -noStats hg19 merged_norm.vcf | \
+SnpSift Annotate -v -c $snpsift_config -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
 
 # GEMINI
 # Run Galaxy Europe tools: GEMINI load and GEMINI inheritance pattern with the tutorial-suggested parameters

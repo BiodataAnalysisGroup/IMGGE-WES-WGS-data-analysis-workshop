@@ -1,0 +1,95 @@
+
+        <html>
+        <head>
+            <style>
+                .thumbnail
+                {
+                    text-decoration:none;
+                    color:black;
+                    font-weight:bold;
+                }
+                .thumbnail span  /*CSS for enlarged image*/
+                {
+                    visibility: hidden;
+                    position: absolute;
+                    padding: 5px;
+                    border: 1px solid #000;
+                    background-color: #e5e5e5;
+                }
+                .thumbnail:hover span  /*CSS for enlarged image on hover*/
+                {
+                    visibility: visible;
+                    left: 550px;
+                    top: 10px;
+                }
+                .imgs td
+                {
+                    vertical-align:middle;
+                    padding: 0.5em;
+                    border: 1px solid black;
+                }
+                table.imgs
+                {
+                    border-collapse:collapse;
+                    margin-left:20px;
+                }
+                .nums th
+                {
+                    text-align: left;
+                }
+                table.nums
+                {
+                    margin-top: 1em;
+                    margin-left:20px;
+                    border: 1px dotted #83A4C3;
+                    background-color: #F5F5F5;
+                    padding: 0.5em;
+                }
+                .pad { padding-left:1em; vertical-align:top; }
+                .right { text-align:right; padding-left:1em; }
+            </style>
+        </head>
+        <body>
+            <table class="imgs">
+    <tr><td><a class="thumbnail" href="proband-insert-size.png"><img src="proband-insert-size.png" width="150px"><span>Insert size<br><img src="proband-insert-size.png"></span></a>
+<td><a class="thumbnail" href="proband-gc-content.png"><img src="proband-gc-content.png" width="150px"><span>GC content<br><img src="proband-gc-content.png"></span></a>
+<td><a class="thumbnail" href="proband-acgt-cycles.png"><img src="proband-acgt-cycles.png" width="150px"><span>Per-base sequence content<br><img src="proband-acgt-cycles.png"></span></a>
+</tr>
+<tr><td>
+<td><a class="thumbnail" href="proband-quals.png"><img src="proband-quals.png" width="150px"><span>Quality per cycle<br><img src="proband-quals.png"></span></a>
+<td><a class="thumbnail" href="proband-quals2.png"><img src="proband-quals2.png" width="150px"><span>Quality per cycle<br><img src="proband-quals2.png"></span></a>
+</tr>
+<tr><td><a class="thumbnail" href="proband-quals3.png"><img src="proband-quals3.png" width="150px"><span>Quality per cycle<br><img src="proband-quals3.png"></span></a>
+<td><a class="thumbnail" href="proband-quals-hm.png"><img src="proband-quals-hm.png" width="150px"><span>Quality per cycle<br><img src="proband-quals-hm.png"></span></a>
+<td><a class="thumbnail" href="proband-indel-cycles.png"><img src="proband-indel-cycles.png" width="150px"><span>Indels per cycle<br><img src="proband-indel-cycles.png"></span></a>
+</tr>
+<tr><td><a class="thumbnail" href="proband-indel-dist.png"><img src="proband-indel-dist.png" width="150px"><span>Indel lengths<br><img src="proband-indel-dist.png"></span></a>
+<td><a class="thumbnail" href="proband-gc-depth.png"><img src="proband-gc-depth.png" width="150px"><span>Mapped depth vs GC<br><img src="proband-gc-depth.png"></span></a>
+
+        </table>
+
+        <table class="nums">
+            <tr><th>Reads</tr>
+            <tr>
+                <td class="pad"><table>
+                <tr><td>total:       <td class="right"> 4,445,364    <td class="right"></tr>
+                <tr><td>filtered:    <td class="right"> 0 <td class="right"> (0.0%)</tr>
+                <tr><td>non-primary: <td class="right"> 29,784  <td class="right"> </tr>
+                <tr><td>duplicated:  <td class="right"> 0      <td class="right"> (0.0%)</tr>
+                <tr><td>mapped:      <td class="right"> 4,444,420   <td class="right"> (100.0%)</tr>
+                <tr><td>zero MQ:     <td class="right"> 390,272      <td class="right"> (8.8%)</tr>
+                <tr><td>avg read length: <td class="right"> 98    <td class="right"></tr>
+                </table></tr>
+
+            <tr><th>Bases</tr>
+            <tr>
+                <td class="pad"><table>
+                <tr><td>total:       <td class="right"> 437,028,257    <td class="right"> (99.9%)</tr>
+                <tr><td>mapped:      <td class="right"> 436,776,952   <td class="right"></tr>
+                <tr><td>error rate:      <td class="right"> 0.20%  <td class="right"></tr>
+                </table></tr>
+        </table>
+
+        </body>
+        </html>
+    

@@ -5,7 +5,7 @@ library(stringr)
 library(ggplot2)
 
 # load files with summary statistics
-stat_files = list.files(path = "bamstat_plots", pattern = "*.summary$")
+stat_files = list.files(pattern = "*.summary$")
 
 # iterate
 initial_sequences_val = c()

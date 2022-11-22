@@ -283,11 +283,11 @@ do
     # extract summary statistics
     cat ${sample}.bc | grep ^SN | cut -f 2- > ${sample}.bc.summary
     # produce plot-bamstat plot
-    plot-bamstats -p ./bamstat_plots/${sample} ${sample}.bc
+    # plot-bamstats -p ./bamstat_plots/${sample} ${sample}.bc
 done
 
 # 4. custom script (e.g., in R) OR ready-to-use software solution (e.g., BAMStats (https://bamstats.sourceforge.net/))
-Rscript summary_plot_generation.R
+# Rscript summary_plot_generation.R
 
 # Filter the paired-end reads of all samples to retain only those read pairs, 
 # for which both the forward and the reverse read have been mapped to the reference successfully
@@ -355,7 +355,10 @@ picard MarkDuplicates \
 samtools faidx hg19_chr8.fa
 
 # Generate indexes (.bai) for bam files
-samtools index *_md.bam
+for i in $(ls *_md.bam)
+do
+    samtools index $i
+done
 
 ### Variant calling and filtering - FreeBayes/GATK HaplotypeCaller/bcftools ###
 # default settings (for low to high depth sequencing in haploid and diploid samples)
@@ -372,11 +375,11 @@ bgzip proband.vcf
 tabix -p vcf proband.vcf.gz
 
 # Variant filtering (bcftools) and index generation (tabix)
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz father.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o father_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz father.vcf.gz | bcftools filter -s DP5 -e 'FORMAT/DP<5' -m+ -Oz -o father_filtered.vcf.gz
 tabix -p vcf father_filtered.vcf.gz
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz mother.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o mother_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz mother.vcf.gz | bcftools filter -s DP5 -e 'FORMAT/DP<5' -m+ -Oz -o mother_filtered.vcf.gz
 tabix -p vcf mother_filtered.vcf.gz
-bcftools filter -s QUAL100 -e '%QUAL<100' -Oz proband.vcf.gz | bcftools filter -s DP5 -e 'DP<5' -m+ -Oz -o proband_filtered.vcf.gz
+bcftools filter -s QUAL100 -e '%QUAL<100' -Oz proband.vcf.gz | bcftools filter -s DP5 -e 'FORMAT/DP<5' -m+ -Oz -o proband_filtered.vcf.gz
 tabix -p vcf proband_filtered.vcf.gz
 
 # Create list of VCF files
@@ -399,9 +402,13 @@ bcftools norm --threads 4 -f hg19_chr8.fa --multiallelics -both -Ov -o merged_no
 snpEff databases | grep -i "Homo_sapiens"
 # Build UCSC hg19 database
 snpEff download -v hg19
+# get snpeff and snpsift config file paths
+snpeff_config=$(find $CONDA_PREFIX -wholename *snpeff-5.1-2/snpEff.config)
+snpsift_config=$(find $CONDA_PREFIX -wholename *snpsift-5.1-0/snpEff.config)
+
 # Annotate with snpEff hg19 genome and dbSNP138 - hg19 - chr8
-snpEff ann -v -c snpEff/snpEff.config -noStats hg19 merged_norm.vcf | \
-SnpSift Annotate -v -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
+snpEff ann -v -c $snpeff_config -noStats hg19 merged_norm.vcf | \
+SnpSift Annotate -v -c $snpsift_config -id dbsnp_138.hg19.chr8.vcf > merged_norm_anno.vcf
 # Analysis of annotated variants with the 'Autosomal recessive' model of Gemini software
 ```
 Run [Galaxy Europe tools](https://usegalaxy.eu/) `GEMINI load` and `GEMINI inheritance pattern` with the [tutorial-suggested parameters](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html#generating-a-gemini-database-of-variants-for-further-annotation-and-efficient-variant-queries)
