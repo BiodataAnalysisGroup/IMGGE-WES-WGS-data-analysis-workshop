@@ -410,12 +410,10 @@ We provided the binary files derived from the VCF file of the 1000 Genomes to av
 ## Download 1000 Genomes data ##
 # This file from the 1000 Genomes contains genetic data of 629 individuals from different ethnic backgrounds.
 # Note, this file is quite large (>60 gigabyte).  
-# wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20100804/ALL.2of4intersection.20100804.genotypes.vcf.gz
 # wget https://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/release/20100804/ALL.2of4intersection.20100804.genotypes.vcf.gz
 # wget https://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/release/20100804/ALL.2of4intersection.20100804.genotypes.vcf.gz.tbi
 
 # Convert vcf to Plink format.
-# plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes
 # plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes
 
 # Noteworthy, the file 'ALL.2of4intersection.20100804.genotypes.bim' contains SNPs without an rs-identifier, these SNPs are indicated with ".". This can also be observed in the file 'ALL.2of4intersection.20100804.genotypes.vcf.gz'. To check this file use this command: zmore ALL.2of4intersection.20100804.genotypes.vcf.gz .
@@ -513,7 +511,6 @@ plink --bfile MDS_merge2 --read-genome MDS_merge2.genome --cluster --mds-plot 10
 
 ```bash
 # Download the file with population information of the 1000 genomes dataset.
-# wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20100804/20100804.ALL.panel
 wget https://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/release/20100804/20100804.ALL.panel
 # The file 20100804.ALL.panel contains population codes of the individuals of 1000 genomes.
 
@@ -586,7 +583,6 @@ plink --bfile HapMap_3_r3_13 --assoc --out assoc_results
 # logistic 
 # We will be using 10 principal components as covariates in this logistic analysis. We use the MDS components calculated from the previous tutorial: covar_mds.txt.
 plink --bfile HapMap_3_r3_13 --covar covar_mds.txt --logistic --hide-covar --out logistic_results
-plink --bfile HapMap_3_r3_13 --covar covar_mds.txt --assoc --hide-covar --out assoc_covar_results
 # Note, we use the option --hide-covar to only show the additive results of the SNPs in the output file.
 
 # Remove NA values, those might give problems generating plots in later steps.
@@ -635,10 +631,8 @@ head sorted_subset_1K_perm_log.txt
 # These scripts assume R >= 3.0.0.
 # If you changed the name of the .assoc file or to the assoc.logistic file, please assign those names also to the Rscripts for the Manhattan and QQ plot, otherwise the scripts will not run.
 
-# The following Rscripts require the R package qqman, the scripts provided will automatically download this R package and install it in /home/{user}/ . Additionally, the scripts load the qqman library and can therefore, similar to all other Rscript on this GitHub page, be executed from the command line.
-# This location can be changed to your desired directory
-
-Rscript --no-save Manhattan_plot.R
-Rscript --no-save QQ_plot.R
+# edit manually the install.package and library functions before execution
+Rscript --vanilla Manhattan_plot.R
+Rscript --vanilla QQ_plot.R
 #######################################################
 ```
