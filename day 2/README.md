@@ -1,9 +1,11 @@
 # Day 2
 
 # A. Structure of larger variant calling – CNV pipeline
-  ## A.1. Discuss copy number mutations and theoretical background (describe their mechanism and the corresponding phenotype)
-      -add slides
-  ## A.2. CNVkit: Genome-wide copy number from high-throughput sequencing 
+ 
+Introductory notes about copy number mutations and theoretical background can be found [here](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/CNV.pdf).
+      
+      
+  ## CNVkit: Genome-wide copy number from high-throughput sequencing 
  ### About the library  
   CNVkit is a Python library and command-line software toolkit to infer and visualize copy number from high-throughput DNA sequencing data.
   For more information have a look at both the [documentaion](https://cnvkit.readthedocs.io/en/stable/) and the corresponding [publication](https://doi.org/10.1371/journal.pcbi.1004873) .
