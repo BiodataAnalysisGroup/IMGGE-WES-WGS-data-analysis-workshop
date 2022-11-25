@@ -15,28 +15,6 @@ Introductory notes about copy number mutations and theoretical background can be
  
 - Copy number calling pipeline
 
-`batch`: Run the CNVkit pipeline on one or more BAM files which is equivalent to:
-
-```bash
-cnvkit.py access hg19.fa -o access.hg19.bed
-cnvkit.py autobin *.bam -t baits.bed -g access.hg19.bed [--annotate refFlat.txt --short-names]
-
-# For each sample...
-cnvkit.py coverage Sample.bam baits.target.bed -o Sample.targetcoverage.cnn
-cnvkit.py coverage Sample.bam baits.antitarget.bed -o Sample.antitargetcoverage.cnn
-
-# With all normal samples...
-cnvkit.py reference *Normal.{,anti}targetcoverage.cnn --fasta hg19.fa -o my_reference.cnn
-
-# For each tumor sample...
-cnvkit.py fix Sample.targetcoverage.cnn Sample.antitargetcoverage.cnn my_reference.cnn -o Sample.cnr
-cnvkit.py segment Sample.cnr -o Sample.cns
-
-# Optionally, with --scatter and --diagram
-cnvkit.py scatter Sample.cnr -s Sample.cns -o Sample-scatter.pdf
-cnvkit.py diagram Sample.cnr -s Sample.cns -o Sample-diagram.pdf
-
-```
 `guess_baits.py`: Use the read depths in one or more given BAM files to infer which regions were targeted. This script can be used in case the original BED file of targeted intervals is unavailable. 
 
 `target`: Prepare a BED file of baited regions for use with CNVkit. Since these regions (usually exons) may be of unequal size, the `--split` option divides the larger regions so that the average bin size after dividing is close to the size specified by `--average-size`. The `--annotate` option can add or replace these labels. Gene annotation databases, e.g. RefSeq or Ensembl, are available in “flat” format from UCSC (e.g. [useful_files/refFlat.txt](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/refFlat.txt)).
@@ -120,10 +98,6 @@ The allelic frequencies of heterozygous SNPs can be viewed alongside copy number
  All of the above commands assembled in the following pipeline, which has both a user defined  and an automated version through `batch` command.
  
  ```bash
-##################################
-#     User defined pipeline      #
-################################## 
-
 #create baits.bed
 #uses .bed file and caverage from .bam to infer the targeted regions 
 guess_baits.py Tumor.bam -t gene_targets.bed -o baits.bed
@@ -157,31 +131,8 @@ cnvkit.py call Tumor.cns -o Tumor.call.cns -v VarScan_somatic.vcf
 #plot bin-level log2 coverages and segmentation calls together
 cnvkit.py scatter Tumor.cnr -s Tumor.cns  -v VarScan_somatic.vcf -o Tumor-scatter.pdf
 
-#we can try genemetrics both with and without the segment files, 
-#take the intersection of those as a list of “trusted” genes, and visualize each of them
-cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns | tail -n+2 | cut -f1 | sort > segment-genes.txt
-cnvkit.py genemetrics -y Tumor.cnr | tail -n+2 | cut -f1 | sort > ratio-genes.txt
-comm -12 ratio-genes.txt segment-genes.txt > trusted-genes.txt
-mkdir gene_scatter_plots
-
-for gene in `cat trusted-genes.txt`
-do
-    cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o gene_scatter_plots/Tumor-$gene-scatter.pdf
-done
-
 # Draw copy number on chromosomes as an ideogram 
 cnvkit.py diagram -s Tumor.cns Tumor.cnr
-
-##################################
-#      Automated pipeline        #
-################################## 
-
-#create baits.bed
-#uses .bed file and caverage from .bam to infer the targeted regions 
-guess_baits.py Tumor.bam -t gene_targets.bed -o baits.bed
-
-#with batch command
-cnvkit.py batch Tumor.bam --normal Normal.bam  --targets baits.bed --annotate refFlat.txt  --fasta reference.fasta --access access-5kb-mappable.hg19_chr5_chr12_chr17.bed --output-reference my_reference.cnn --output-dir results/ --diagram --scatter
 
 #we can try genemetrics both with and without the segment files, 
 #take the intersection of those as a list of “trusted” genes, and visualize each of them
@@ -195,8 +146,6 @@ do
     cnvkit.py scatter -s Tumor.cn{s,r} -g $gene -o gene_scatter_plots/Tumor-$gene-scatter.pdf
 done
 
-# Draw copy number on chromosomes as an ideogram 
-cnvkit.py diagram -s Tumor.cns Tumor.cnr
 ``` 
 # B. From variants to Genome-Wide Association Studies
 
