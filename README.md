@@ -1,4 +1,4 @@
-# Serbia-WES-WGS-data-analysis
+# WES/WGS data analysis
 Training material for the WES/WGS data analysis course
 
 # Installation notes for WSL2 and Docker Desktop
