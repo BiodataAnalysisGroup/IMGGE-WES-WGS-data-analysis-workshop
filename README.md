@@ -51,9 +51,9 @@ Download all files in the same folder, where the tutorial will take place. Decom
 
 Some of the files required for day2 of the tutorial can be downloaded directly from here:
 
-- [refFlat.txt](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/refFlat.txt)
+- [refFlat.txt](https://github.com/BiodataAnalysisGroup/IMGGE-WES-WGS-data-analysis-workshop/blob/main/day%202/useful_files/refFlat.txt)
 
-- [access regions .bed file](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)
+- [access regions .bed file](https://github.com/BiodataAnalysisGroup/IMGGE-WES-WGS-data-analysis-workshop/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)
 
 - [BED file for the captured reagions](https://zenodo.org/record/5697358/files/capture_targets_chr5_12_17.bed)
 
