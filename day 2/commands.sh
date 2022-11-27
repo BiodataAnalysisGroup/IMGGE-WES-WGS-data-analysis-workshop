@@ -1,9 +1,9 @@
 #create baits.bed
 #uses .bed file and caverage from .bam to infer the targeted regions 
-guess_baits.py Tumor.bam -t capture_targets.bed -o baits.bed
+#guess_baits.py Tumor.bam -t capture_targets.bed -o baits.bed
 
 #devides larger bins to smaller
-cnvkit.py target baits.bed  --split --annotate refFlat.txt -o baits_target.bed
+cnvkit.py target capture_targets.bed  --split --annotate refFlat.txt -o baits_target.bed
 
 #run antitarget
 cnvkit.py antitarget capture_targets.bed -g access-5kb-mappable.hg19_chr5_chr12_chr17.bed -o my_antitargets.bed
@@ -39,7 +39,7 @@ cnvkit.py diagram -s Tumor.cns Tumor.cnr
 #are calculated per-segment with segmetrics
 #we can try genemetrics both with and without the segment files, 
 #take the intersection of those as a list of “trusted” genes, and visualize each of them
-cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns | tail -n+2 | cut -f1 | sort > segment-genes.txt
+cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns  | tail -n+2 | cut -f1 | sort > segment-genes.txt
 cnvkit.py genemetrics -y Tumor.cnr | tail -n+2 | cut -f1 | sort > ratio-genes.txt
 comm -12 ratio-genes.txt segment-genes.txt > trusted-genes.txt
 mkdir gene_scatter_plots
