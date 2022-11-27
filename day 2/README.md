@@ -2,7 +2,7 @@
 
 # A. Structure of larger variant calling – CNV pipeline
  
-Introductory notes about copy number mutations and theoretical background can be found [here](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/CNV.pdf).
+Introductory notes about copy number mutations and theoretical background can be found [here](https://github.com/BiodataAnalysisGroup/IMGGE-WES-WGS-data-analysis-workshop/blob/main/day%202/CNV.pdf).
       
       
   ## CNVkit: Genome-wide copy number from high-throughput sequencing 
@@ -17,13 +17,13 @@ Introductory notes about copy number mutations and theoretical background can be
 
 `guess_baits.py`: Use the read depths in one or more given BAM files to infer which regions were targeted. This script can be used in case the original BED file of targeted intervals is unavailable. 
 
-`target`: Prepare a BED file of baited regions for use with CNVkit. Since these regions (usually exons) may be of unequal size, the `--split` option divides the larger regions so that the average bin size after dividing is close to the size specified by `--average-size`. The `--annotate` option can add or replace these labels. Gene annotation databases, e.g. RefSeq or Ensembl, are available in “flat” format from UCSC (e.g. [useful_files/refFlat.txt](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/refFlat.txt)).
+`target`: Prepare a BED file of baited regions for use with CNVkit. Since these regions (usually exons) may be of unequal size, the `--split` option divides the larger regions so that the average bin size after dividing is close to the size specified by `--average-size`. The `--annotate` option can add or replace these labels. Gene annotation databases, e.g. RefSeq or Ensembl, are available in “flat” format from UCSC (e.g. [useful_files/refFlat.txt](https://github.com/BiodataAnalysisGroup/IMGGE-WES-WGS-data-analysis-workshop/blob/main/day%202/useful_files/refFlat.txt)).
 
 Exons in the human genome have an average size of about 200bp. The target bin size default of 267 is chosen so that splitting larger exons will produce bins with a minimum size of 200. Since bins that contain fewer reads result in a noisier copy number signal, this approach ensures the “noisiness” of the bins produced by splitting larger exons will be no worse than average.
 
 `access`: Calculate the sequence-accessible coordinates in chromosomes from the given reference genome, output as a BED file. Many fully sequenced genomes, including the human genome, contain large regions of DNA that are inaccessable to sequencing. (These are mainly the centromeres, telomeres, and highly repetitive regions.) In the reference genome sequence these regions are filled in with large stretches of “N” characters. These regions cannot be mapped by resequencing, so CNVkit avoids them when calculating the antitarget bin locations. This command computes the locations of the accessible sequence regions for a given reference genome based on these masked-out sequences, treating long spans of ‘N’ characters as the inaccessible regions and outputting the coordinates of the regions between them.
 
-An “access” file precomputed for the UCSC reference human genome build hg19, with some known low-mappability regions excluded, is included in the directory ([useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed](https://github.com/BiodataAnalysisGroup/Serbia-WES-WGS-data-analysis/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)).
+An “access” file precomputed for the UCSC reference human genome build hg19, with some known low-mappability regions excluded, is included in the directory ([useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed](https://github.com/BiodataAnalysisGroup/IMGGE-WES-WGS-data-analysis-workshop/blob/main/day%202/useful_files/access-5kb-mappable.hg19_chr5_chr12_chr17.bed)).
 
 `antitarget`: Given a “target” BED file that lists the chromosomal coordinates of the tiled regions used for targeted resequencing, derive a BED file off-target/”antitarget” regions. Certain genomic regions cannot be mapped by short-read resequencing (see access); we can avoid them when calculating the antitarget locations by passing the locations of the accessible sequence regions with the `-g` or `--access` option. CNVkit will then compute “antitarget” bins only within the accessible genomic regions specified in the “access” file.
 
@@ -91,7 +91,7 @@ The allelic frequencies of heterozygous SNPs can be viewed alongside copy number
 
 ### BAM files
   
- The BAM files that are used throughout this tutorial are processed following the pipeline from this [Galaxy Training Tutorial](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/somatic-variants/tutorial.html) up untill the `RmDup` command to remove duplicate reads.
+ The BAM files that are used throughout this tutorial are processed following the pipeline from this [Galaxy Training Tutorial](https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/somatic-variants/tutorial.html).
 
   ### Pipeline
   
