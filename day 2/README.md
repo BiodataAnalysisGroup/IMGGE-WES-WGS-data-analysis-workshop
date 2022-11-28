@@ -98,17 +98,21 @@ The allelic frequencies of heterozygous SNPs can be viewed alongside copy number
  All of the above commands assembled in the following pipeline, which has both a user defined  and an automated version through `batch` command.
  
  ```bash
+#create baits.bed
+#uses .bed file and caverage from .bam to infer the targeted regions 
+#guess_baits.py Tumor.bam -t capture_targets.bed -o baits.bed
+
 #devides larger bins to smaller
-cnvkit.py target capture_targets.bed  --split --annotate refFlat.txt -o baits_target.bed
+cnvkit.py target capture_targets.bed  --split --annotate refFlat.txt -o my_targets.bed
 
 #run antitarget
 cnvkit.py antitarget capture_targets.bed -g access-5kb-mappable.hg19_chr5_chr12_chr17.bed -o my_antitargets.bed
 
 #calculate coverage in the target/antitarget regions from BAM read depths
-cnvkit.py coverage Tumor.bam baits_target.bed -o Tumor.targetcoverage.cnn
+cnvkit.py coverage Tumor.bam my_targets.bed -o Tumor.targetcoverage.cnn
 cnvkit.py coverage Tumor.bam my_antitargets.bed -o Tumor.antitargetcoverage.cnn
 
-cnvkit.py coverage Normal.bam baits_target.bed -o Normal.targetcoverage.cnn
+cnvkit.py coverage Normal.bam my_targets.bed -o Normal.targetcoverage.cnn
 cnvkit.py coverage Normal.bam my_antitargets.bed -o Normal.antitargetcoverage.cnn
 
 #copy number reference from Normal.bam
@@ -116,7 +120,7 @@ cnvkit.py reference *Normal.{,anti}targetcoverage.cnn --fasta reference.fasta -o
 
 #combine the uncorrected target and antitarget coverage tables (.cnn) and correct for biases
 cnvkit.py fix Tumor.targetcoverage.cnn Tumor.antitargetcoverage.cnn my_reference.cnn -o Tumor.cnr
-cnvkit.py fix Normal.targetcoverage.cnn Normal.antitargetcoverage.cnn my_reference.cnn -o Normal.cnr
+#cnvkit.py fix Normal.targetcoverage.cnn Normal.antitargetcoverage.cnn my_reference.cnn -o Normal.cnr
 
 #infer discrete copy number segments from the given coverage table
 cnvkit.py segment Tumor.cnr  -v VarScan_somatic.vcf -o Tumor.cns
@@ -136,7 +140,7 @@ cnvkit.py diagram -s Tumor.cns Tumor.cnr
 #we can try genemetrics both with and without the segment files, 
 #take the intersection of those as a list of “trusted” genes, and visualize each of them
 cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns  | tail -n+2 | cut -f1 | sort > segment-genes.txt
-cnvkit.py genemetrics -y Tumor.cnr | tail -n+2 | cut -f1 | sort > ratio-genes.txt
+cnvkit.py genemetrics -y Tumor.cnr | tail -n +2 | cut -f 1 | sort > ratio-genes.txt
 comm -12 ratio-genes.txt segment-genes.txt > trusted-genes.txt
 mkdir gene_scatter_plots
 
