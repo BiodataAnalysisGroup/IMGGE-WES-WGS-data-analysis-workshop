@@ -3,16 +3,16 @@
 #guess_baits.py Tumor.bam -t capture_targets.bed -o baits.bed
 
 #devides larger bins to smaller
-cnvkit.py target capture_targets.bed  --split --annotate refFlat.txt -o baits_target.bed
+cnvkit.py target capture_targets.bed  --split --annotate refFlat.txt -o my_targets.bed
 
 #run antitarget
 cnvkit.py antitarget capture_targets.bed -g access-5kb-mappable.hg19_chr5_chr12_chr17.bed -o my_antitargets.bed
 
 #calculate coverage in the target/antitarget regions from BAM read depths
-cnvkit.py coverage Tumor.bam baits_target.bed -o Tumor.targetcoverage.cnn
+cnvkit.py coverage Tumor.bam my_targets.bed -o Tumor.targetcoverage.cnn
 cnvkit.py coverage Tumor.bam my_antitargets.bed -o Tumor.antitargetcoverage.cnn
 
-cnvkit.py coverage Normal.bam baits_target.bed -o Normal.targetcoverage.cnn
+cnvkit.py coverage Normal.bam my_targets.bed -o Normal.targetcoverage.cnn
 cnvkit.py coverage Normal.bam my_antitargets.bed -o Normal.antitargetcoverage.cnn
 
 #copy number reference from Normal.bam
@@ -40,7 +40,7 @@ cnvkit.py diagram -s Tumor.cns Tumor.cnr
 #we can try genemetrics both with and without the segment files, 
 #take the intersection of those as a list of “trusted” genes, and visualize each of them
 cnvkit.py genemetrics -y Tumor.cnr -s Tumor.cns  | tail -n+2 | cut -f1 | sort > segment-genes.txt
-cnvkit.py genemetrics -y Tumor.cnr | tail -n+2 | cut -f1 | sort > ratio-genes.txt
+cnvkit.py genemetrics -y Tumor.cnr | tail -n +2 | cut -f 1 | sort > ratio-genes.txt
 comm -12 ratio-genes.txt segment-genes.txt > trusted-genes.txt
 mkdir gene_scatter_plots
 
